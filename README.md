@@ -1,11 +1,22 @@
 # rest-in-contract
+[![npm version](https://img.shields.io/npm/v/rest-in-contract.svg)](https://www.npmjs.com/package/rest-in-contract)
+[![node](https://img.shields.io/node/v/rest-in-contract.svg)](https://www.npmjs.com/package/rest-in-contract)
+[![Codecov branch](https://img.shields.io/codecov/c/github/airicyu/rest-in-contract/master.svg)](https://codecov.io/gh/airicyu/rest-in-contract)
+[![Build](https://travis-ci.org/airicyu/rest-in-contract.svg?branch=master)](https://travis-ci.org/airicyu/rest-in-contract)
+
+[![GitHub issues](https://img.shields.io/github/issues/airicyu/rest-in-contract.svg)](https://github.com/airicyu/rest-in-contract/issues)
+[![GitHub forks](https://img.shields.io/github/forks/airicyu/rest-in-contract.svg)](https://github.com/airicyu/rest-in-contract/network)
+[![GitHub stars](https://img.shields.io/github/stars/airicyu/rest-in-contract.svg)](https://github.com/airicyu/rest-in-contract/stargazers)
+[![GitHub License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://raw.githubusercontent.com/airicyu/ahp/master/LICENSE)
+[![dependencies Status](https://david-dm.org/airicyu/rest-in-contract/status.svg)](https://david-dm.org/airicyu/rest-in-contract)
+[![devDependencies Status](https://david-dm.org/airicyu/rest-in-contract/dev-status.svg)](https://david-dm.org/airicyu/rest-in-contract?type=dev)
 
 ## Project Page
 
-- [Module Homepage](http://blog.airic-yu.com/2064/rest-in-contract-nodejs-module-for-rest-api-contract-server)
-- [Github](https://github.com/airicyu/rest-in-contract)
-- [NPM](https://www.npmjs.com/package/rest-in-contract)
-- [Project rest-in-contract's Homepage](http://blog.airic-yu.com/2062/project-rest-in-contract)
+- Module Homepage: [http://blog.airic-yu.com/2064/rest-in-contract-nodejs-module-for-rest-api-contract-server](http://blog.airic-yu.com/2064/rest-in-contract-nodejs-module-for-rest-api-contract-server)
+- Githup: [https://github.com/airicyu/rest-in-contract](https://github.com/airicyu/rest-in-contract)
+- NPM: [https://www.npmjs.com/package/rest-in-contract](https://www.npmjs.com/package/rest-in-contract)
+- Project rest-in-contract's Homepage: [http://blog.airic-yu.com/2062/project-rest-in-contract](http://blog.airic-yu.com/2062/project-rest-in-contract)
 
 ## Project Status
 
@@ -28,7 +39,7 @@ Since it is still beta version, we are not finalized the v1.0 in-the-box feature
 # What is rest-in-contract
 
 `rest-in-contract` is a product to let you embrace **[Consumer-driven contracts](https://martinfowler.com/articles/consumerDrivenContracts.html)**. It is REST in nature so that it fits for integrating with all kind of programming languages.
-For more detail about Project `rest-in-contract`, you may have a look in our [Project rest-in-contract's Homepage](http://blog.airic-yu.com/2062/project-rest-in-contract) for detail introduction.
+For more detail about Project `rest-in-contract`, you may have a look in our [Project rest-in-contract's Homepage](http://blog.airic-yu.com/2062/project-rest-in-contracts) for detail introduction.
 
 ------------------------
 
