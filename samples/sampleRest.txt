@@ -1,0 +1,151 @@
+### Import apps from files
+POST http://localhost:8000/api/v1/importAppsFiles
+Content-type: application/json
+
+{
+    "appFolder": "C:/nodejsws/rest-in-contract/samples/sample_import_app_folder"
+}
+
+
+
+
+### Post App
+POST http://localhost:8000/api/v1/apps
+Content-type: application/json
+
+{
+    "name": "test",
+    "servers":["http://example.com:8001"],
+    "basePath": "/api"
+}
+### Get all Apps
+GET http://localhost:8000/api/v1/apps/
+### Get app
+GET http://localhost:8000/api/v1/apps/{{appId}}
+### Put App
+PUT http://localhost:8000/api/v1/apps/{{appId}}
+Content-type: application/json
+
+{
+    "name": "test app",
+    "servers":["http://example.com:8001"],
+    "basePath": "/api"
+}
+### Delete app
+DELETE http://localhost:8000/api/v1/apps/{{appId}}
+
+
+### Post App version
+POST http://localhost:8000/api/v1/apps/{{appId}}/versions
+Content-type: application/json
+
+{
+	"v": "0.0.1",
+	"path": "{{app.basePath}}/v{{version.v}}",
+	"contracts": []
+}
+### Get app versions
+GET http://localhost:8000/api/v1/apps/{{appId}}/versions
+### Get app version
+GET http://localhost:8000/api/v1/apps/{{appId}}/versions/0.0.1
+### Put App version
+Put http://localhost:8000/api/v1/apps/{{appId}}/versions/0.0.1
+Content-type: application/json
+
+{
+	"v": "0.0.1",
+	"path": "{{app.basePath}}/v{{version.v}}",
+	"contracts": [
+        "{{contractId}}"
+    ]
+}
+### Delete app version
+DELETE http://localhost:8000/api/v1/apps/{{appId}}/versions/0.0.1
+
+
+### Post contracts
+POST http://localhost:8000/api/v1/contracts
+Content-type: application/vnd.js.contract
+
+module.exports = 
+{
+	"name": "testing for hello contract",
+    "request": {
+        "method": "POST",
+        "urlPath": value({stub: regex("/hello/[a-z]*"), test: "/hello/apple"}),
+        "queryParameters": [{
+            "name": "a", "value": "b"
+        }],
+        "body": {
+            "test": {
+                "a": value({stub: regex("[0-9]*"), test: "13579"}),
+                "b": value({stub: integer({gt:0, lt:60000}), test: 24680}),
+                "c": ["apple", "orange", "banana"]
+            }
+        },
+        "headers": {
+        }
+    },
+    "response": {
+        "status": 200,
+        "headers": {
+            "test-header": "dummy",
+            "test-regex-header": regex("\"/hello/[a-z]{3,5}\"")
+        },
+        "body": {
+            "num" : value({stub: 56789, test: integer({gt:0, lt:60000})}),
+        }
+    }
+}
+
+### Get contracts
+GET http://localhost:8000/api/v1/contracts/
+### Get contract
+GET http://localhost:8000/api/v1/contracts/{{contractId}}
+Accept: application/json
+### Get contract
+GET http://localhost:8000/api/v1/contracts/{{contractId}}
+Accept: application/vnd.js.contract
+### Get contract
+GET http://localhost:8000/api/v1/contracts/{{contractId}}
+### Delete contract
+DELETE http://localhost:8000/api/v1/contracts/{{contractId}}
+
+
+
+
+### Post app wirestub
+POST http://localhost:8000/api/v1/apps/{{appId}}/wirestubs
+Content-type: application/json
+
+{
+    "port": 8001
+}
+### Get app wirestub
+GET http://localhost:8000/api/v1/apps/{{appId}}/wirestubs
+### Delete app wirestub
+DELETE http://localhost:8000/api/v1/apps/{{appId}}/wirestubs
+
+
+
+
+### Post mock request
+POST http://localhost:8001/api/v0.0.1/hello/world?a=b
+Content-type: application/json
+
+{
+    "test": {
+        "a": "123",
+        "b": 23456,
+        "c": ["apple", "orange", "banana"]
+    }
+}
+
+
+### Post wiretest
+POST http://localhost:8000/api/v1/apps/{{appId}}/wiretests
+Content-type: application/json
+
+{
+    "server": "http://localhost:8001"
+}

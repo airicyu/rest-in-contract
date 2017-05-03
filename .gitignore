@@ -35,3 +35,11 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+
+# VSCode
+.vscode
+
+node_modules
+coverage
+test/TESTS-xunit.xml
+.history

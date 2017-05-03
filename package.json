@@ -1,0 +1,40 @@
+{
+  "name": "rest-in-contract",
+  "version": "0.0.1",
+  "description": "Rest API Contract. This module is the Contract Server nodejs module for `rest-in-contract` project.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/airicyu/rest-in-contract"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "7"
+  },
+  "keywords": [
+    "REST",
+    "API",
+    "Contract"
+  ],
+  "author": "Eric Yu",
+  "email": "airic.yu@gmail.com",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "chai": "^3.5.0",
+    "express": "^4.15.2",
+    "fs-extra": "^3.0.0",
+    "hal": "^0.1.0",
+    "http-shutdown": "^1.2.0",
+    "js-beautify": "^1.6.12",
+    "jsonpath": "^0.2.11",
+    "randexp": "^0.4.5",
+    "request": "^2.81.0",
+    "stateful-result": "^1.0.0",
+    "tcp-port-used": "^0.1.2",
+    "uuid": "^3.0.1",
+    "vm2": "^3.4.6"
+  }
+}
