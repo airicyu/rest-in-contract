@@ -28,7 +28,7 @@ Since it is still beta version, we are not finalized the v1.0 in-the-box feature
 # What is rest-in-contract
 
 `rest-in-contract` is a product to let you embrace **[Consumer-driven contracts](https://martinfowler.com/articles/consumerDrivenContracts.html)**. It is REST in nature so that it fits for integrating with all kind of programming languages.
-For more detail about Project `rest-in-contract`, you may have a look in our [Project rest-in-contract's Homepage]() for detail introduction.
+For more detail about Project `rest-in-contract`, you may have a look in our [Project rest-in-contract's Homepage](http://blog.airic-yu.com/2062/project-rest-in-contract) for detail introduction.
 
 ------------------------
 
