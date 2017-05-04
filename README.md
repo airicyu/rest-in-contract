@@ -38,8 +38,10 @@ Since it is still beta version, we are not finalized the v1.0 in-the-box feature
 
 # What is rest-in-contract
 
-`rest-in-contract` is a product to let you embrace **[Consumer-driven contracts](https://martinfowler.com/articles/consumerDrivenContracts.html)**. It is REST in nature so that it fits for integrating with all kind of programming languages.
-For more detail about Project `rest-in-contract`, you may have a look in our [Project rest-in-contract's Homepage](http://blog.airic-yu.com/2062/project-rest-in-contracts) for detail introduction.
+Rest-in-contract-project is a product to let you embrace **[Consumer-driven contracts](https://martinfowler.com/articles/consumerDrivenContracts.html)**. It is REST in nature so that it fits for integrating with all kind of programming languages.
+For more detail about `Project rest-in-contract`, you may have a look in our [Project rest-in-contract's Homepage](http://blog.airic-yu.com/2062/project-rest-in-contracts) for detail introduction.
+
+This `rest-in-contract` node module is a module for the Local Contract Server which is the core part of the Rest-in-contract project.
 
 ## Slideshare: Basic Concepts & Flows
 [Rest in-contract basic concepts & flows](https://www.slideshare.net/EricYu28/rest-incontract-basic-concepts-flows-75659518)
