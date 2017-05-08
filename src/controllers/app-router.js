@@ -66,6 +66,7 @@ router.get('/:appId', async(req, res) => {
     if (req.params.app) {
         let app = req.params.app;
         let hal = app.toHal();
+        res.set('content-type', 'application/json+hal')
         res.send(hal);
     } else {
         res.status(404).send('App not found');

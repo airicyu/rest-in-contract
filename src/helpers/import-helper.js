@@ -42,10 +42,14 @@ const importAppsFiles = async function (appsRootDir) {
                     let contractFiles = fse.readdirSync(path.join(versionFolderPath, 'contracts'));
                     contractFiles.forEach((contractFile) => {
                         let contractFilePath = path.join(versionFolderPath, 'contracts', contractFile);
-                        let contractJs = fse.readFileSync(contractFilePath);
-                        let contract = Contract.newFromScript(contractJs);
-                        contractsMapping[contractFilePath] = contract;
-                        versionToContractMapping[versionJsonfilePath].push(contractFilePath);
+                        let contractJs = fse.readFileSync(contractFilePath, "utf-8");
+                        try {
+                            let contract = Contract.newFromScript(contractJs);
+                            contractsMapping[contractFilePath] = contract;
+                            versionToContractMapping[versionJsonfilePath].push(contractFilePath);
+                        } catch (e) {
+                            console.error(e);
+                        }
                     });
                 }
 

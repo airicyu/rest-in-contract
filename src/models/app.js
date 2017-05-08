@@ -2,18 +2,17 @@
 
 const uuidV4 = require('uuid/v4');
 const Version = require('./version');
-var hal = require('hal');
+const hal = require('hal');
+const moduleAPIVersion = "1";
 
 class App {
-    constructor(props) {
+    constructor(props = {}) {
         let self = this;
-        Object.assign(self, {
-            id: null,
-            name: null,
-            servers: [],
-            basePath: null,
-            versions: []
-        });
+        this.id = null;
+        this.name = null;
+        this.servers = [];
+        this.basePath = null;
+        this.versions = [];
 
         if (props.id && typeof props.id === 'string') {
             self.id = props.id;
@@ -56,8 +55,8 @@ class App {
             servers: app.servers,
             basePath: app.basePath,
             versionNumbers: app.versions.map((_v) => _v.v)
-        }, `/api/v1/apps/${app.id}`);
-        appHal.link('versions', `/api/v1/apps/${app.id}/versions`);
+        }, `/api/v${moduleAPIVersion}/apps/${app.id}`);
+        appHal.link('versions', `/api/v${moduleAPIVersion}/apps/${app.id}/versions`);
 
         return appHal;
     }

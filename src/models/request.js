@@ -1,7 +1,7 @@
 'use strict';
 
 class Request {
-    constructor(props) {
+    constructor(props = {}) {
         this.method = props.method || 'GET';
         this.urlPath = props.urlPath || '/';
         this.queryParameters = props.queryParameters || [];

@@ -100,14 +100,21 @@ module.exports =
 
 ### Get contracts
 GET http://localhost:8000/api/v1/contracts/
+
 ### Get contract
 GET http://localhost:8000/api/v1/contracts/{{contractId}}
 Accept: application/json
 ### Get contract
 GET http://localhost:8000/api/v1/contracts/{{contractId}}
 Accept: application/vnd.js.contract
+
 ### Get contract
-GET http://localhost:8000/api/v1/contracts/{{contractId}}
+GET http://localhost:8000/api/v1/contracts/{{contractId2}}
+Accept: application/json
+### Get contract
+GET http://localhost:8000/api/v1/contracts/{{contractId2}}
+Accept: application/vnd.js.contract
+
 ### Delete contract
 DELETE http://localhost:8000/api/v1/contracts/{{contractId}}
 
@@ -141,6 +148,27 @@ Content-type: application/json
     }
 }
 
+### Post mock request
+POST http://localhost:8001/api/v0.0.1/function_examples
+Content-type: application/json
+Authorization: Bearer 0a4b6c5d
+
+{
+    "test": {
+        "numberString": "13579",
+        "number": 24680,
+        "arrayOfValues": ["apple", "orange", "banana"],
+        "regular expression": "acp-113520",
+        "name": "Cristina Hayes",
+        "email": "Cristina.Hayes82@yahoo.com",
+        "phone": "1-454-765-8135",
+        "date": "2017-05-07",
+        "words": "reiciendis est minima",
+        "uuid4": "510552bc-c017-452a-bd51-7b1b3d3a5f13",
+        "multipleChoices": "class A",
+        "notAnyOf": "c"
+    }
+}
 
 ### Post wiretest
 POST http://localhost:8000/api/v1/apps/{{appId}}/wiretests

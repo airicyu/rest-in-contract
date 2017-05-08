@@ -65,6 +65,7 @@ router.get('/:versionNo', async(req, res) => {
     if (req.params.app) {
         let version = req.params.version;
         let hal = version.toHal();
+        res.set('content-type', 'application/json+hal')
         res.send(hal);
     } else {
         res.status(404).send('App not found');

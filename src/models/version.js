@@ -1,16 +1,16 @@
 'use strict';
 
-var hal = require('hal');
+const hal = require('hal');
+const moduleAPIVersion = "1";
 
 class Version {
-    constructor(props) {
+    constructor(props = {}) {
         let self = this;
-        Object.assign(self, {
-            parent: null,
-            v: null,
-            path: null,
-            contracts: []
-        });
+
+        this.parent = null;
+        this.v = null;
+        this.path = null;
+        this.contracts = [];
 
         if (props.parent && typeof props.parent === 'string') {
             self.parent = props.parent;
@@ -46,9 +46,9 @@ class Version {
             v: version.v,
             path: version.path,
             contracts: version.contracts
-        }, `/api/v1/apps/${appId}/versions/${version.v}`);
-        versionHal.link('parent', `/api/v1/apps/${appId}`);
-        versionHal.link('contracts', `/api/v1/apps/${appId}/versions/${version.v}/contracts`);
+        }, `/api/v${moduleAPIVersion}/apps/${appId}/versions/${version.v}`);
+        versionHal.link('parent', `/api/v${moduleAPIVersion}/apps/${appId}`);
+        versionHal.link('contracts', `/api/v${moduleAPIVersion}/apps/${appId}/versions/${version.v}/contracts`);
         return versionHal;
     }
 }

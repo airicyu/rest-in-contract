@@ -1,7 +1,10 @@
 'use strict';
 
+const { recurrsiveToString } = require('./utils');
+
 class Middleware {
     constructor(props) {
+        this.serialId = '8e2dc6a8-0b49-4506-b705-d2a47456376b'
         this.type = props.type || null;
         this.options = props.options || {};
         this.toJsonString = props.toJsonString.bind(this);
@@ -21,13 +24,13 @@ class Middleware {
         let done = false;
         do {
             if (result instanceof Middleware) {
-                if (props.features.indexOf(Evaluator) >= 0 && result.hasFeature(Evaluator)) {
+                if (props.features.includes(Evaluator) && result.hasFeature(Evaluator)) {
                     result = result.evaluate.apply(result, props.evaluate);
                     continue;
-                } else if (props.features.indexOf(Mockable) >= 0 && result.hasFeature(Mockable)) {
+                } else if (props.features.includes(Mockable) && result.hasFeature(Mockable)) {
                     result = result.mock();
                     continue;
-                } else if (props.features.indexOf(Comparable) >= 0 && result.hasFeature(Comparable)) {
+                } else if (props.features.includes(Comparable) && result.hasFeature(Comparable)) {
                     result = result.compareFunc.apply(result, props.compareFunc);
                     continue;
                 }
@@ -48,6 +51,7 @@ class Evaluator extends Feature {
         self.evaluate = props.evaluate.bind(self);
     }
 }
+
 class Comparable extends Feature {
     static get type() {
         return 'Comparable';
@@ -56,6 +60,7 @@ class Comparable extends Feature {
         self.compareFunc = props.compareFunc.bind(self);
     }
 }
+
 class Mockable extends Feature {
     static get type() {
         return 'Mockable';
@@ -65,36 +70,6 @@ class Mockable extends Feature {
     }
 }
 
-const recurrsiveToString = function (obj) {
-    if (obj instanceof Middleware && obj.hasFeature(Comparable)) {
-        return obj.toJsonString();
-    } else if (obj.toJsonString) {
-        return obj.toJsonString();
-    }
-
-    let out = '';
-    if (typeof obj === 'object' && !Array.isArray(obj)) {
-        out += '{ ';
-        let currObjStr = '';
-        for (let key in obj) {
-            if (typeof obj[key] === 'function') {
-                continue;
-            }
-            currObjStr += JSON.stringify(key) + ": ";
-            currObjStr += recurrsiveToString(obj[key]);
-            currObjStr += ", ";
-        }
-        if (currObjStr.length > 2) {
-            currObjStr = currObjStr.substr(0, currObjStr.length - 2);
-        }
-        out += currObjStr + ' }';
-    } else {
-        out = JSON.stringify(obj);
-    }
-    return out;
-}
-
 Object.assign(module.exports, {
-    types: { Middleware, Feature, Evaluator, Comparable, Mockable },
-    utils: { recurrsiveToString }
+    types : { Middleware, Feature, Evaluator, Comparable, Mockable }
 });

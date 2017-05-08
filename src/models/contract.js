@@ -1,27 +1,30 @@
 const Request = require('./request.js');
 const Response = require('./response.js');
 const uuid = require('uuid/v4');
-const middlewares = require('./../contract-script/middlewares/middlewares');
+const dsl = require('./../contract-script/dsl/dsl');
 
-const { recurrsiveToString } = middlewares.utils;
-const { Middleware } = middlewares.types;
-const { recurrsiveEvaluate, recurrsiveCompare, recurrsiveMock, stubValue, testValue } = middlewares.builtin;
+const { recurrsiveToString } = dsl.utils;
+const { Middleware } = dsl.baseTypes;
+const { recurrsiveEvaluate, recurrsiveCompare, recurrsiveMock, stubValue, testValue } = dsl.functions;
 const sandboxRunner = require('./../contract-script/sandbox/sandbox-runner');
 const beautify = require('js-beautify').js_beautify;
 var hal = require('hal');
 
 class Contract {
-    constructor(props) {
-        let self = this;
-        self.id = props.id;
-        self.name = props.name || self.id;
-        self.request = new Request(props.request || {});
-        self.response = new Response(props.response || {});
+    constructor(props = {}) {
+        this.id = props.id;
+        this.name = props.name || this.id;
+        this.request = new Request(props.request || {});
+        this.response = new Response(props.response || {});
     }
 
     static newFromScript(contractScript) {
-        let contract = new Contract(sandboxRunner.runScript(contractScript), {});
-        return contract;
+        let scriptOutputObject = sandboxRunner.runScript(contractScript);
+        if (scriptOutputObject) {
+            let contract = new Contract(scriptOutputObject, {});
+            return contract;
+        }
+        return null;
     }
 
     toHal() {
@@ -125,7 +128,7 @@ class Contract {
                 let headerValue = self.request.headers[headerKey];
 
                 headerValue = recurrsiveEvaluate(headerValue).evaluate(evaluateContext);
-                isMatch = isMatch && recurrsiveCompare(headerValue).compareFunc(req.headers[headerKey]);
+                isMatch = isMatch && recurrsiveCompare(headerValue).compareFunc(req.headers[headerKey.toLowerCase()]);
             }
         }
 

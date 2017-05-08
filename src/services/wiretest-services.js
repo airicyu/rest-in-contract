@@ -3,10 +3,11 @@
 const { wirestub } = require('./../models/models');
 
 const { Timer } = require('./../utils/timer-utils');
-const middlewares = require('./../contract-script/middlewares/middlewares');
-const { Middleware } = middlewares.types;
-const { recurrsiveEvaluate, recurrsiveMock, recurrsiveCompare } = middlewares.builtin;
-const { recurrsiveToString } = middlewares.utils;
+const dsl = require('./../contract-script/dsl/dsl');
+
+const { recurrsiveToString } = dsl.utils;
+const { Middleware } = dsl.baseTypes;
+const { recurrsiveEvaluate, recurrsiveCompare, recurrsiveMock } = dsl.functions;
 
 const appServices = require('./app-services');
 const versionServices = require('./version-services');
@@ -118,6 +119,7 @@ async function testContract(app, version, contract, wiretest) {
         let headerValue = testContract.request.headers[headerKey];
         headerValue = recurrsiveEvaluate(headerValue).evaluate();
         headerValue = recurrsiveMock(headerValue).mock();
+        reqHeaders[headerKey] = headerValue;
     }
 
     let reqBody = testContract.request.body;

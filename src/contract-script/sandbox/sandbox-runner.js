@@ -2,12 +2,12 @@
 
 const { NodeVM } = require('vm2');
 
-const middleware = require('./../middlewares/middlewares');
-const builtinMiddlewares = middleware.builtin;
+const dsl = require('./../dsl/dsl');
+const builtinFunctions = dsl.functions;
 
 const runScript = function (script, extensions) {
     let sandbox = {};
-    Object.assign(sandbox, builtinMiddlewares, extensions);
+    Object.assign(sandbox, builtinFunctions, extensions);
 
     let vm = new NodeVM({
         console: 'inherit',
@@ -21,8 +21,13 @@ const runScript = function (script, extensions) {
         wrapper: 'commonjs'
     });
 
-    let proxyObject = vm.run(script);
-    return proxyObject;
+    try{
+        let proxyObject = vm.run(script);
+        return proxyObject;
+    } catch (e){
+        console.error('sandbox-runner runtime error', e, e.stack);
+        throw(e);
+    }
 }
 
 module.exports.runScript = runScript;

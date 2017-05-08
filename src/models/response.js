@@ -1,7 +1,7 @@
 'use strict';
 
 class Response {
-    constructor(props) {
+    constructor(props = {}) {
         this.status = props.status || 200;
         this.body = props.body || '';
         this.headers = props.headers || {};

@@ -1,13 +1,15 @@
 'use strict';
-var coreTypes = require('./core-types');
-var { Middleware, Feature, Evaluator, Comparable, Mockable } = coreTypes.types;
-var { recurrsiveToString } = coreTypes.utils;
+const { Middleware, Feature, Evaluator, Comparable, Mockable } = require('./base-types').types;
+const { recurrsiveToString } = require('./utils');
 
-var RandExp = require('randexp');
-var jp = require('jsonpath');
+const RandExp = require('randexp');
+const jp = require('jsonpath');
+const faker = require('faker');
+const moment = require('moment');
+const uuidV4 = require('uuid/v4');
 
 const float = function (options = {}) {
-    let compare = new Middleware({
+    let fn = new Middleware({
         type: 'float',
         features: [
             Comparable, Mockable
@@ -66,11 +68,11 @@ const float = function (options = {}) {
             return `float(${JSON.stringify(this.options)})`;
         }
     });
-    return compare;
+    return fn;
 }
 
 const integer = function (options = {}) {
-    let compare = new Middleware({
+    let fn = new Middleware({
         type: 'integer',
         features: [
             Comparable, Mockable
@@ -132,11 +134,237 @@ const integer = function (options = {}) {
             return `integer(${JSON.stringify(this.options)})`;
         }
     });
-    return compare;
+    return fn;
+}
+
+const date = function (options = {}) {
+    let fn = new Middleware({
+        type: 'date',
+        features: [
+            Comparable, Mockable
+        ],
+        options: {
+            format: options.format || moment.ISO_8601,
+            type: options.type,
+            from: options.from,
+            to: options.to
+        },
+        compareFunc: function (value) {
+            let dateValue = moment(value, this.options.format);
+            let timestamp = dateValue.valueOf();
+            if (!dateValue.isValid()) {
+                return false;
+            }
+            if (this.options.from) {
+                let fromDate = moment(this.options.from);
+                if (fromDate.isValid()) {
+                    let fromTimestamp = fromDate.valueOf;
+                    if (timestamp < fromTimestamp) {
+                        return false;
+                    }
+                }
+            }
+            if (this.options.to) {
+                let toDate = moment(this.options.to);
+                if (toDate.isValid()) {
+                    let toTimestamp = toDate.valueOf;
+                    if (timestamp > toTimestamp) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        },
+        mock: function () {
+            let dateStr = '';
+            if (this.options.type === 'past') {
+                dateStr = faker.date.past();
+            } else if (this.options.type === 'future') {
+                dateStr = faker.date.future();
+            } else if (this.options.type === 'between') {
+                dateStr = faker.date.between(this.options.from, this.options.to);
+            } else {
+                dateStr = faker.date.recent();
+            }
+            return moment(dateStr).format(this.options.format);
+        },
+        toJsonString: function () {
+            return `date(${JSON.stringify(this.options)})`;
+        }
+    });
+    return fn;
+}
+
+const text = function (options = {}) {
+    let fn = new Middleware({
+        type: 'text',
+        features: [
+            Comparable, Mockable
+        ],
+        options: {
+            type: options.type
+        },
+        compareFunc: function (value) {
+            if (value) {
+                let stringValue = typeof value === 'string' ? value : JSON.stringify(value);
+                let type = this.options.type;
+                let matchResult = null;
+                if (type === 'word') {
+                    matchResult = stringValue.match(/[A-Za-z\-]+/);
+                } else if (type === 'words') {
+                    matchResult = stringValue.match(/[A-Za-z\-' ]+/);
+                } else if (type === 'sentence') {
+                    matchResult = stringValue.match(/[A-Za-z\-'" ,.!?;]+/);
+                } else if (type === 'paragraphs') {
+                    matchResult = stringValue.match(/[A-Za-z\-'" ,.!?;]+/);
+                }
+                return matchResult && matchResult[0].length === stringValue.length;
+            }
+            return false;
+        },
+        mock: function () {
+            let type = this.options.type;
+            if (type === 'word') {
+                return faker.lorem.word();
+            } else if (type === 'words') {
+                return faker.lorem.words();
+            } else if (type === 'sentence') {
+                return faker.lorem.sentence();
+            } else if (type === 'paragraphs') {
+                return faker.lorem.paragraphs();
+            }
+            return faker.lorem.words();
+        },
+        toJsonString: function () {
+            return `text(${JSON.stringify(this.options)})`;
+        }
+    });
+    return fn;
+}
+
+
+const name = function () {
+    let fn = new Middleware({
+        type: 'name',
+        features: [
+            Comparable, Mockable
+        ],
+        compareFunc: function (value) {
+            if (value) {
+                let stringValue = typeof value === 'string' ? value : JSON.stringify(value);
+                let matchResult = stringValue.match(/([A-Z][a-zA-Z0-9'. ]*)+/);
+                return matchResult && matchResult[0].length === stringValue.length;
+            }
+            return false;
+        },
+        mock: function () {
+            return faker.name.findName();
+        },
+        toJsonString: function () {
+            return 'name()';
+        }
+    });
+    return fn;
+}
+
+const email = function () {
+    let fn = new Middleware({
+        type: 'email',
+        features: [
+            Comparable, Mockable
+        ],
+        compareFunc: function (value) {
+            if (value) {
+                let stringValue = typeof value === 'string' ? value : JSON.stringify(value);
+                let matchResult = stringValue.match(/[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/);
+                return matchResult && matchResult[0].length === stringValue.length;
+            }
+            return false;
+        },
+        mock: function () {
+            return faker.internet.email();
+        },
+        toJsonString: function () {
+            return 'email()';
+        }
+    });
+    return fn;
+}
+
+const phone = function () {
+    let fn = new Middleware({
+        type: 'phone',
+        features: [
+            Comparable, Mockable
+        ],
+        compareFunc: function (value) {
+            if (value) {
+                let stringValue = typeof value === 'string' ? value : JSON.stringify(value);
+                let matchResult = stringValue.match(/[0-9xX \-().]+/);
+                return matchResult && matchResult[0].length === stringValue.length;
+            }
+            return false;
+        },
+        mock: function () {
+            return faker.phone.phoneNumber();
+        },
+        toJsonString: function () {
+            return 'phone()';
+        }
+    });
+    return fn;
+}
+
+const address = function () {
+    let fn = new Middleware({
+        type: 'address',
+        features: [
+            Comparable, Mockable
+        ],
+        compareFunc: function (value) {
+            if (value) {
+                let stringValue = typeof value === 'string' ? value : JSON.stringify(value);
+                let matchResult = stringValue.match(/[0-9A-Za-z ,'.]+/);
+                return matchResult && matchResult[0].length === stringValue.length;
+            }
+            return false;
+        },
+        mock: function () {
+            return faker.address.streetAddress();
+        },
+        toJsonString: function () {
+            return 'address()';
+        }
+    });
+    return fn;
+}
+
+const uuid4 = function () {
+    let fn = new Middleware({
+        type: 'uuid4',
+        features: [
+            Comparable, Mockable
+        ],
+        compareFunc: function (value) {
+            if (value) {
+                let stringValue = typeof value === 'string' ? value : JSON.stringify(value);
+                let matchResult = stringValue.match(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+                return matchResult && matchResult[0].length === stringValue.length;
+            }
+            return false;
+        },
+        mock: function () {
+            return uuidV4();
+        },
+        toJsonString: function () {
+            return 'uuid4()';
+        }
+    });
+    return fn;
 }
 
 const regex = function (pattern) {
-    let compare = new Middleware({
+    let fn = new Middleware({
         type: 'regex',
         features: [
             Comparable, Mockable
@@ -160,8 +388,10 @@ const regex = function (pattern) {
             return 'regex(' + JSON.stringify(pattern) + ')';
         }
     });
-    return compare;
+    return fn;
 }
+
+
 
 const recurrsiveEvaluate = function (object) {
     let middleware = new Middleware({
@@ -302,7 +532,7 @@ const recurrsiveCompare = function (object) {
 }
 
 const jsonpath = function (pathExpression) {
-    let query = new Middleware({
+    let fn = new Middleware({
         type: 'jsonpath',
         features: [
             Evaluator
@@ -317,7 +547,63 @@ const jsonpath = function (pathExpression) {
             return `jsonpath(${JSON.stringify(this.options.pathExpression)})`;
         }
     });
-    return query;
+    return fn;
+}
+
+
+const anyOf = function (...choices) {
+    let fn = new Middleware({
+        type: 'anyOf',
+        features: [
+            Comparable, Mockable
+        ],
+        options: {
+            choices: choices
+        },
+        compareFunc: function (value) {
+            let jsonValue = JSON.stringify(value);
+            for (let choice of this.options.choices) {
+                let choiceJsonValue = JSON.stringify(choice);
+                if (jsonValue === choiceJsonValue) {
+                    return true;
+                }
+            }
+            return false;
+        },
+        mock: function () {
+            return this.options.choices[Math.floor(Math.random() * this.options.choices.length)];
+        },
+        toJsonString: function () {
+            return `anyOf(${this.options.choices.map(c=>JSON.stringify(c)).join(', ')})`;
+        }
+    });
+    return fn;
+}
+
+const notAnyOf = function (...choices) {
+    let fn = new Middleware({
+        type: 'notAnyOf',
+        features: [
+            Comparable
+        ],
+        options: {
+            choices: choices
+        },
+        compareFunc: function (value) {
+            let jsonValue = JSON.stringify(value);
+            for (let choice of this.options.choices) {
+                let choiceJsonValue = JSON.stringify(choice);
+                if (jsonValue === choiceJsonValue) {
+                    return false;
+                }
+            }
+            return true;
+        },
+        toJsonString: function () {
+            return `notAnyOf(${this.options.choices.map(c=>JSON.stringify(c)).join(', ')})`;
+        }
+    });
+    return fn;
 }
 
 const value = function (props) {
@@ -386,17 +672,24 @@ const testValue = function (props) {
     return consumerProducerValue;
 }
 
-Object.assign(module.exports, {
-    middlewares: {
-        jsonpath,
-        regex,
-        integer,
-        float,
-        recurrsiveCompare,
-        recurrsiveEvaluate,
-        recurrsiveMock,
-        value,
-        stubValue,
-        testValue
-    }
-});
+module.exports.functions = {
+    float,
+    integer,
+    date,
+    text,
+    name,
+    email,
+    phone,
+    address,
+    uuid4,
+    regex,
+    jsonpath,
+    recurrsiveCompare,
+    recurrsiveEvaluate,
+    recurrsiveMock,
+    value,
+    stubValue,
+    testValue,
+    anyOf,
+    notAnyOf
+};
