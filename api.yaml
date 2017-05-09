@@ -1,14 +1,21 @@
 swagger: "2.0"
 info:
-  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
-  version: "1.0"
+  description: >
+    Rest-in-contract Project is a product to let you embrace [Consumer-driven contracts](https://martinfowler.com/articles/consumerDrivenContracts.html).
+    It is REST in nature so that it fits for integrating with all kind of programming languages.
+    For more detail about [Project rest-in-contract](http://blog.airic-yu.com/2062/project-rest-in-contracts), you may have a look in our Project rest-in-contract's Homepage for detail introduction.
+        
+    This rest-in-contract node module is a module for the Local Contract Server which is the core part of the Rest-in-contract project.
+  version: "0.1.0"
   title: "rest-in-contract"
-  termsOfService: "http://swagger.io/terms/"
   contact:
     email: "airic.yu@gmail.com"
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+externalDocs:
+  description: "Find out more in Github page"
+  url: "https://github.com/airicyu/rest-in-contract"
 host: "localhost"
 basePath: "/api/v1"
 tags:
@@ -27,15 +34,15 @@ paths:
     post:
       tags:
       - "app"
-      summary: "Add an app"
+      summary: "Add an App"
       description: ""
       operationId: "addApp"
       consumes:
       - "application/json"
       parameters:
-      - in: "body"
-        name: "body"
-        description: "App object that needs to be added"
+      - in: body
+        name: body
+        description: "An App object that needs to be added"
         required: true
         schema:
           $ref: "#/definitions/App"
@@ -45,674 +52,883 @@ paths:
     get:
       tags:
       - "app"
-      summary: "Get all app"
+      summary: "Get all Apps"
       description: ""
-      operationId: "getAllApp"
+      operationId: "getAllAppsId"
       responses:
         200:
-          description: "Operation success"
+          description: "OK"
           schema:
-            type: "array"
-            items: "string"
+            type: array
+            items:
+              type: string
   /apps/{appId}:
-    put:
-      tags:
-      - "app"
-      summary: "Update an existing app"
-      description: ""
-      operationId: "updateApp"
-      consumes:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "App object that needs to be updated"
-        required: true
-        schema:
-          $ref: "#/definitions/App"
-      responses:
-        204:
-          description: "Update success"
-        404:
-          description: "App not found"
     get:
       tags:
       - "app"
-      summary: "Get an app"
+      summary: "Get an App"
       description: ""
       operationId: "getApp"
       produces:
-      - "application/json"
+      - application/json
+      parameters:
+      - in: path
+        name: appId
+        description: "App ID"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: '#/definitions/AppHal'
+          examples:
+            application/json+hal:
+              _links:
+                self:
+                  href: "/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75"
+                versions:
+                  href: "/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/versions"
+              id: "80a69a44-3f3b-48c1-a7d1-b34b89117e75"
+              name: "test"
+              servers:
+              - "http://example.com:8001"
+              basepath: "/api"
+              versionNumbers:
+              - "0.0.1"
+        404:
+          description: "App not found"
+    put:
+      tags:
+      - "app"
+      summary: "Update an existing App"
+      description: ""
+      operationId: "updateApp"
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: "An App object that needs to be updated"
+        required: true
+        schema:
+          $ref: '#/definitions/App'
+      - in: path
+        name: appId
+        description: "App ID"
+        required: true
+        type: string
       responses:
         204:
           description: "Update success"
         404:
           description: "App not found"
-  /pet/findByStatus:
-    get:
-      tags:
-      - "pet"
-      summary: "Finds Pets by status"
-      description: "Multiple status values can be provided with comma separated strings"
-      operationId: "findPetsByStatus"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "status"
-        in: "query"
-        description: "Status values that need to be considered for filter"
-        required: true
-        type: "array"
-        items:
-          type: "string"
-          enum:
-          - "available"
-          - "pending"
-          - "sold"
-          default: "available"
-        collectionFormat: "multi"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Pet"
-        400:
-          description: "Invalid status value"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /pet/findByTags:
-    get:
-      tags:
-      - "pet"
-      summary: "Finds Pets by tags"
-      description: "Muliple tags can be provided with comma separated strings. Use         tag1, tag2, tag3 for testing."
-      operationId: "findPetsByTags"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "tags"
-        in: "query"
-        description: "Tags to filter by"
-        required: true
-        type: "array"
-        items:
-          type: "string"
-        collectionFormat: "multi"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Pet"
-        400:
-          description: "Invalid tag value"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-      deprecated: true
-  /pet/{petId}:
-    get:
-      tags:
-      - "pet"
-      summary: "Find pet by ID"
-      description: "Returns a single pet"
-      operationId: "getPetById"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet to return"
-        required: true
-        type: "integer"
-        format: "int64"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Pet"
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Pet not found"
-      security:
-      - api_key: []
-    post:
-      tags:
-      - "pet"
-      summary: "Updates a pet in the store with form data"
-      description: ""
-      operationId: "updatePetWithForm"
-      consumes:
-      - "application/x-www-form-urlencoded"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet that needs to be updated"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "name"
-        in: "formData"
-        description: "Updated name of the pet"
-        required: false
-        type: "string"
-      - name: "status"
-        in: "formData"
-        description: "Updated status of the pet"
-        required: false
-        type: "string"
-      responses:
-        405:
-          description: "Invalid input"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
     delete:
       tags:
-      - "pet"
-      summary: "Deletes a pet"
+      - "app"
+      summary: "Delete an App"
       description: ""
-      operationId: "deletePet"
+      operationId: "deleteApp"
       produces:
-      - "application/xml"
-      - "application/json"
+      - application/json
       parameters:
-      - name: "api_key"
-        in: "header"
-        required: false
-        type: "string"
-      - name: "petId"
-        in: "path"
-        description: "Pet id to delete"
+      - in: path
+        name: appId
+        description: "App ID"
         required: true
-        type: "integer"
-        format: "int64"
+        type: string
       responses:
-        400:
-          description: "Invalid ID supplied"
+        204:
+          description: "Delete success"
         404:
-          description: "Pet not found"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /pet/{petId}/uploadImage:
+          description: "App not found"
+  /apps/{appId}/versions:
     post:
       tags:
-      - "pet"
-      summary: "uploads an image"
+      - "app"
+      summary: "Add an App Version"
       description: ""
-      operationId: "uploadFile"
+      operationId: "addAppVersion"
       consumes:
-      - "multipart/form-data"
-      produces:
       - "application/json"
       parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet to update"
+      - in: path
+        name: appId
+        description: "App ID"
         required: true
-        type: "integer"
-        format: "int64"
-      - name: "additionalMetadata"
-        in: "formData"
-        description: "Additional data to pass to server"
-        required: false
-        type: "string"
-      - name: "file"
-        in: "formData"
-        description: "file to upload"
-        required: false
-        type: "file"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/ApiResponse"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /store/inventory:
-    get:
-      tags:
-      - "store"
-      summary: "Returns pet inventories by status"
-      description: "Returns a map of status codes to quantities"
-      operationId: "getInventory"
-      produces:
-      - "application/json"
-      parameters: []
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "object"
-            additionalProperties:
-              type: "integer"
-              format: "int32"
-      security:
-      - api_key: []
-  /store/order:
-    post:
-      tags:
-      - "store"
-      summary: "Place an order for a pet"
-      description: ""
-      operationId: "placeOrder"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "order placed for purchasing the pet"
+        type: string
+      - in: body
+        name: body
+        description: "An App Version object that needs to be added"
         required: true
         schema:
-          $ref: "#/definitions/Order"
+          $ref: "#/definitions/AppVersion"
       responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Order"
-        400:
-          description: "Invalid Order"
-  /store/order/{orderId}:
+        201:
+          description: "App Version created"
     get:
       tags:
-      - "store"
-      summary: "Find purchase order by ID"
-      description: "For valid response try integer IDs with value >= 1 and <= 10.         Other values will generated exceptions"
-      operationId: "getOrderById"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "orderId"
-        in: "path"
-        description: "ID of pet that needs to be fetched"
-        required: true
-        type: "integer"
-        maximum: 10.0
-        minimum: 1.0
-        format: "int64"
+      - "app"
+      summary: "Get all App Version Numbers"
+      description: ""
+      operationId: "getAllAppVersions"
       responses:
         200:
-          description: "successful operation"
+          description: "OK"
           schema:
-            $ref: "#/definitions/Order"
-        400:
-          description: "Invalid ID supplied"
+            type: array
+            items:
+              type: string
         404:
-          description: "Order not found"
-    delete:
-      tags:
-      - "store"
-      summary: "Delete purchase order by ID"
-      description: "For valid response try integer IDs with positive integer value.         Negative or non-integer values will generate API errors"
-      operationId: "deleteOrder"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "orderId"
-        in: "path"
-        description: "ID of the order that needs to be deleted"
-        required: true
-        type: "integer"
-        minimum: 1.0
-        format: "int64"
-      responses:
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Order not found"
-  /user:
-    post:
-      tags:
-      - "user"
-      summary: "Create user"
-      description: "This can only be done by the logged in user."
-      operationId: "createUser"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Created user object"
-        required: true
-        schema:
-          $ref: "#/definitions/User"
-      responses:
-        default:
-          description: "successful operation"
-  /user/createWithArray:
-    post:
-      tags:
-      - "user"
-      summary: "Creates list of users with given input array"
-      description: ""
-      operationId: "createUsersWithArrayInput"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "List of user object"
-        required: true
-        schema:
-          type: "array"
-          items:
-            $ref: "#/definitions/User"
-      responses:
-        default:
-          description: "successful operation"
-  /user/createWithList:
-    post:
-      tags:
-      - "user"
-      summary: "Creates list of users with given input array"
-      description: ""
-      operationId: "createUsersWithListInput"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "List of user object"
-        required: true
-        schema:
-          type: "array"
-          items:
-            $ref: "#/definitions/User"
-      responses:
-        default:
-          description: "successful operation"
-  /user/login:
+          description: "App not found"
+  /apps/{appId}/versions/{versionNo}:
     get:
       tags:
-      - "user"
-      summary: "Logs user into the system"
+      - "app"
+      summary: "Get an App Version"
       description: ""
-      operationId: "loginUser"
+      operationId: "getAppVersion"
       produces:
-      - "application/xml"
-      - "application/json"
+      - application/json
       parameters:
-      - name: "username"
-        in: "query"
-        description: "The user name for login"
+      - in: path
+        name: appId
+        description: "App ID"
         required: true
-        type: "string"
-      - name: "password"
-        in: "query"
-        description: "The password for login in clear text"
+        type: string
+      - in: path
+        name: versionNo
+        description: "Version number"
         required: true
-        type: "string"
+        type: string
       responses:
         200:
-          description: "successful operation"
+          description: "OK"
           schema:
-            type: "string"
-          headers:
-            X-Rate-Limit:
-              type: "integer"
-              format: "int32"
-              description: "calls per hour allowed by the user"
-            X-Expires-After:
-              type: "string"
-              format: "date-time"
-              description: "date in UTC when token expires"
-        400:
-          description: "Invalid username/password supplied"
-  /user/logout:
-    get:
-      tags:
-      - "user"
-      summary: "Logs out current logged in user session"
-      description: ""
-      operationId: "logoutUser"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters: []
-      responses:
-        default:
-          description: "successful operation"
-  /user/{username}:
-    get:
-      tags:
-      - "user"
-      summary: "Get user by user name"
-      description: ""
-      operationId: "getUserByName"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "username"
-        in: "path"
-        description: "The name that needs to be fetched. Use user1 for testing. "
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/User"
-        400:
-          description: "Invalid username supplied"
+            $ref: '#/definitions/AppVersionHal'
+          examples:
+            application/json+hal:
+              _links:
+                self:
+                  href: "/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/versions/0.0.1"
+                parent:
+                  href: "/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75"
+                contracts:
+                  href: "/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/versions/0.0.1/contracts"
+              v: "80a69a44-3f3b-48c1-a7d1-b34b89117e75"
+              path: "{{app.basePath}}/v{{version.v}}"
+              contracts:
+              - "94923fbd-9092-4a46-ad65-0d8a2e2f551e"
         404:
-          description: "User not found"
+          description: "App not found or App Version not found"
     put:
       tags:
-      - "user"
-      summary: "Updated user"
-      description: "This can only be done by the logged in user."
-      operationId: "updateUser"
-      produces:
-      - "application/xml"
-      - "application/json"
+      - "app"
+      summary: "Update an existing App Version"
+      description: ""
+      operationId: "updateAppVersion"
+      consumes:
+      - application/json
       parameters:
-      - name: "username"
-        in: "path"
-        description: "name that need to be updated"
-        required: true
-        type: "string"
-      - in: "body"
-        name: "body"
-        description: "Updated user object"
+      - in: body
+        name: body
+        description: "App Version object that needs to be updated"
         required: true
         schema:
-          $ref: "#/definitions/User"
+          $ref: '#/definitions/AppVersion'
+      - in: path
+        name: appId
+        description: "App ID"
+        required: true
+        type: string
+      - in: path
+        name: versionNo
+        description: "Version number"
+        required: true
+        type: string
       responses:
-        400:
-          description: "Invalid user supplied"
+        204:
+          description: "Update success"
         404:
-          description: "User not found"
+          description: "App not found or App Version not found"
     delete:
       tags:
-      - "user"
-      summary: "Delete user"
-      description: "This can only be done by the logged in user."
-      operationId: "deleteUser"
+      - "app"
+      summary: "Delete an App Version"
+      description: ""
+      operationId: "deleteAppVersion"
       produces:
-      - "application/xml"
+      - application/json
+      parameters:
+      - in: path
+        name: appId
+        description: "App ID"
+        required: true
+        type: string
+      - in: path
+        name: versionNo
+        description: "Version number"
+        required: true
+        type: string
+      responses:
+        204:
+          description: "Delete success"
+        404:
+          description: "App not found or App Version not found"
+  /contracts:
+    post:
+      tags:
+      - "contract"
+      summary: "Add an Contract"
+      description: ""
+      operationId: "addContract"
+      consumes:
+      - "application/vnd.js.contract"
+      parameters:
+      - in: body
+        name: body
+        description: "An Contract object as JS script that needs to be added"
+        required: true
+        schema:
+          type: string
+          example: |-
+            module.exports = {
+              "name": "testing for hello contract",
+              "request": {
+                "method": "POST",
+                "urlPath": "/hello/apple",
+                "queryParameters": [{
+                  "name": "a",
+                  "value": "b"
+                }],
+                "body": {
+                  "a": "b"
+                },
+                "headers": {}
+              },
+              "response": {
+                "status": 200,
+                "body": {
+                  "ok"
+                },
+                "headers": {}
+              }
+            }
+      responses:
+        201:
+          description: "Contract created"
+    get:
+      tags:
+      - "contract"
+      summary: "Get all Contracts"
+      description: ""
+      operationId: "getAllContracts"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: array
+            items:
+              type: string
+  /contracts/{contractId}:
+    get:
+      tags:
+      - "contract"
+      summary: "Get an Contract"
+      description: ""
+      operationId: "getContract"
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: contractId
+        description: "Contract ID"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: '#/definitions/ContractHal'
+          examples:
+            application/json+hal:
+              _links:
+                self:
+                  href: "/api/v1/contracts/94923fbd-9092-4a46-ad65-0d8a2e2f551e"
+              id: "94923fbd-9092-4a46-ad65-0d8a2e2f551e"
+              name: "testing for hello contract"
+              contractScript: "module.exports = { \"id\": \"94923fbd-9092-4a46-ad65-0d8a2e2f551e\", \"name\": \"testing for hello contract\", \"request\": { \"method\": \"POST\", \"urlPath\": \"/hello/apple\", \"queryParameters\": [{\"name\":\"a\",\"value\":\"b\"}], \"body\": { \"a\": \"b\" }, \"headers\": {  } }, \"response\": { \"status\": 200, \"body\": \"ok\", \"headers\": {} } }"
+            application/vnd.js.contract: |-
+              module.exports = {
+                "name": "testing for hello contract",
+                "request": {
+                  "method": "POST",
+                  "urlPath": "/hello/apple",
+                  "queryParameters": [{
+                    "name": "a",
+                    "value": "b"
+                  }],
+                  "body": {
+                    "a": "b"
+                  },
+                  "headers": {}
+                },
+                "response": {
+                  "status": 200,
+                  "body": {
+                    "ok"
+                  },
+                  "headers": {}
+                }
+              }
+        404:
+          description: "App not found"
+    put:
+      tags:
+      - "contract"
+      summary: "Update an existing Contract"
+      description: ""
+      operationId: "updateContract"
+      consumes:
+      - "application/vnd.js.contract"
+      parameters:
+      - in: path
+        name: contractId
+        description: "Contract ID"
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: "An Contract object as JS script that needs to be added"
+        required: true
+        schema:
+          type: string
+          example: |-
+            module.exports = {
+              "name": "testing for hello contract",
+              "request": {
+                "method": "POST",
+                "urlPath": "/hello/apple",
+                "queryParameters": [{
+                  "name": "a",
+                  "value": "b"
+                }],
+                "body": {
+                  "a": "b"
+                },
+                "headers": {}
+              },
+              "response": {
+                "status": 200,
+                "body": {
+                  "ok"
+                },
+                "headers": {}
+              }
+            }
+      responses:
+        204:
+          description: "Update success"
+        404:
+          description: "Contract not found"
+    delete:
+      tags:
+      - "contract"
+      summary: "Delete an Contract"
+      description: ""
+      operationId: "deleteContract"
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: contractId
+        description: "Contract ID"
+        required: true
+        type: string
+      responses:
+        204:
+          description: "Delete success"
+        404:
+          description: "Contract not found"
+  /apps/{appId}/wirestubs:
+    post:
+      tags:
+      - "wirestub"
+      summary: "Wiring an App's' wirestub"
+      description: ""
+      operationId: "wireAppWirestub"
+      consumes:
       - "application/json"
       parameters:
-      - name: "username"
-        in: "path"
-        description: "The name that needs to be deleted"
+      - in: path
+        name: appId
+        description: "App ID"
         required: true
-        type: "string"
+        type: string
+      - in: body
+        name: body
+        description: "An App object that needs to be added"
+        required: true
+        schema:
+          $ref: '#/definitions/Wirestub'
       responses:
-        400:
-          description: "Invalid username supplied"
-        404:
-          description: "User not found"
-securityDefinitions:
-  petstore_auth:
-    type: "oauth2"
-    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
-    flow: "implicit"
-    scopes:
-      write:pets: "modify pets in your account"
-      read:pets: "read your pets"
-  api_key:
-    type: "apiKey"
-    name: "api_key"
-    in: "header"
-definitions:
-  Order:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      petId:
-        type: "integer"
-        format: "int64"
-      quantity:
-        type: "integer"
-        format: "int32"
-      shipDate:
-        type: "string"
-        format: "date-time"
-      status:
-        type: "string"
-        description: "Order Status"
-        enum:
-        - "placed"
-        - "approved"
-        - "delivered"
-      complete:
-        type: "boolean"
-        default: false
-    xml:
-      name: "Order"
-  Category:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      name:
-        type: "string"
-    xml:
-      name: "Category"
-  User:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      username:
-        type: "string"
-      firstName:
-        type: "string"
-      lastName:
-        type: "string"
-      email:
-        type: "string"
-      password:
-        type: "string"
-      phone:
-        type: "string"
-      userStatus:
-        type: "integer"
-        format: "int32"
-        description: "User Status"
-    xml:
-      name: "User"
-  Tag:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      name:
-        type: "string"
-    xml:
-      name: "Tag"
-  Pet:
-    type: "object"
-    required:
-    - "name"
-    - "photoUrls"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      category:
-        $ref: "#/definitions/Category"
-      name:
-        type: "string"
-        example: "doggie"
-      photoUrls:
-        type: "array"
-        xml:
-          name: "photoUrl"
-          wrapped: true
-        items:
-          type: "string"
+        201:
+          description: "Wirestub success"
+        500:
+          description: "Wirestub fail"
+    get:
       tags:
-        type: "array"
-        xml:
-          name: "tag"
-          wrapped: true
-        items:
-          $ref: "#/definitions/Tag"
-      status:
-        type: "string"
-        description: "pet status in the store"
-        enum:
-        - "available"
-        - "pending"
-        - "sold"
-    xml:
-      name: "Pet"
+      - "wirestub"
+      summary: "Get the wirestub metadata"
+      description: ""
+      operationId: "getAppWirestub"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: path
+        name: appId
+        description: "App ID"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: '#/definitions/Wirestub'
+        404:
+          description: "Wirestub not found"
+    delete:
+      tags:
+      - "wirestub"
+      summary: "Unwire the wirestub"
+      description: ""
+      operationId: "unwireAppWirestub"
+      parameters:
+      - in: path
+        name: appId
+        description: "App ID"
+        required: true
+        type: string
+      responses:
+        201:
+          description: "Wire wirestub success"
+          schema:
+            $ref: '#/definitions/Wirestub'
+        204:
+          description: "Unwire wirestub success"
+        404:
+          description: "Wirestub not found"
+  /apps/{appId}/wiretests:
+    post:
+      tags:
+      - "wiretest"
+      summary: "Testing App's contracts"
+      description: ""
+      operationId: "verifyAppContracts"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: path
+        name: appId
+        description: "App ID"
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: "An App object that needs to be added"
+        required: true
+        schema:
+          $ref: '#/definitions/Wiretest'
+      responses:
+        200:
+          description: "Test finished"
+          schema:
+            $ref: '#/definitions/WiretestResult'
+          examples:
+            application/json: |-
+              {
+                "app": {
+                  "id": "80a69a44-3f3b-48c1-a7d1-b34b89117e75",
+                  "name": "test"
+                },
+                "testInfo": {
+                  "timeMS": 76.2579990029335,
+                  "success": true
+                },
+                "results": [
+                  {
+                    "versionNo": "0.0.1",
+                    "testInfo": {
+                      "timeMS": 75.7432410120964,
+                      "success": true
+                    },
+                    "results": [
+                      {
+                        "testInfo": {
+                          "timeMS": 51.209954023361206,
+                          "success": true,
+                          "errors": [],
+                          "appId": "80a69a44-3f3b-48c1-a7d1-b34b89117e75",
+                          "version": "0.0.1",
+                          "contract": {
+                            "id": "b9135ab0-20d2-43f3-b947-3bac5b061f61",
+                            "name": "function examples"
+                          }
+                        },
+                        "request": {
+                          "method": "POST",
+                          "urlPath": "http://localhost:8001/api/v0.0.1/function_examples",
+                          "queryParams": {},
+                          "headers": {
+                            "authorization": "Bearer 0a4b6c5d",
+                            "Content-type": "application/json"
+                          },
+                          "body": {
+                            "test": {
+                              "numberString": "13579",
+                              "number": 24680,
+                              "arrayOfValues": [
+                                "apple",
+                                "orange",
+                                "banana"
+                              ],
+                              "regular expression": "acp-113520",
+                              "name": "Cristina Hayes",
+                              "email": "Cristina.Hayes82@yahoo.com",
+                              "phone": "1-454-765-8135",
+                              "date": "2017-05-07",
+                              "words": "reiciendis est minima",
+                              "uuid4": "510552bc-c017-452a-bd51-7b1b3d3a5f13",
+                              "multipleChoices": "class A",
+                              "notAnyOf": "c"
+                            }
+                          }
+                        },
+                        "expectedResponseScript": "{ \"status\": 200, \"body\": { \"num\": integer({\"gt\":0,\"lt\":60000}), \"reqBodyJsonParams\": jsonpath(\"$.req.body.test\") }, \"headers\": { \"test-header\": \"dummy\", \"test-regex-header\": regex(\"\\\"/hello/[a-z]{3,5}\\\"\") } }",
+                        "response": {
+                          "status": 200,
+                          "headers": {
+                            "x-powered-by": "Express",
+                            "test-header": "dummy",
+                            "test-regex-header": "\"/hello/njm\"",
+                            "content-type": "application/json; charset=utf-8",
+                            "content-length": "381",
+                            "etag": "W/\"17d-j5SCn3LsQSGqO0vZ5zj/AHLJ8qg\"",
+                            "date": "Tue, 07 May 2017 09:11:28 GMT",
+                            "connection": "close"
+                          },
+                          "body": "{\"num\":56789,\"reqBodyJsonParams\":[{\"numberString\":\"13579\",\"number\":24680,\"arrayOfValues\":[\"apple\",\"orange\",\"banana\"],\"regular expression\":\"acp-113520\",\"name\":\"Cristina Hayes\",\"email\":\"Cristina.Hayes82@yahoo.com\",\"phone\":\"1-454-765-8135\",\"date\":\"2017-05-07\",\"words\":\"reiciendis est minima\",\"uuid4\":\"510552bc-c017-452a-bd51-7b1b3d3a5f13\",\"multipleChoices\":\"class A\",\"notAnyOf\":\"c\"}]}"
+                        }
+                      },
+                      {
+                        "testInfo": {
+                          "timeMS": 22.899529993534088,
+                          "success": true,
+                          "errors": [],
+                          "appId": "80a69a44-3f3b-48c1-a7d1-b34b89117e75",
+                          "version": "0.0.1",
+                          "contract": {
+                            "id": "94923fbd-9092-4a46-ad65-0d8a2e2f551e",
+                            "name": "testing for hello contract"
+                          }
+                        },
+                        "request": {
+                          "method": "POST",
+                          "urlPath": "http://localhost:8001/api/v0.0.1/hello/apple",
+                          "queryParams": {
+                            "a": "b"
+                          },
+                          "headers": {
+                            "Content-type": "application/json"
+                          },
+                          "body": {
+                            "test": {
+                              "a": "13579",
+                              "b": 24680,
+                              "c": [
+                                "apple",
+                                "orange",
+                                "banana"
+                              ]
+                            }
+                          }
+                        },
+                        "expectedResponseScript": "{ \"status\": 200, \"body\": { \"num\": integer({\"gt\":0,\"lt\":60000}) }, \"headers\": { \"test-header\": \"dummy\", \"test-regex-header\": regex(\"\\\"/hello/[a-z]{3,5}\\\"\") } }",
+                        "response": {
+                          "status": 200,
+                          "headers": {
+                            "x-powered-by": "Express",
+                            "test-header": "dummy",
+                            "test-regex-header": "\"/hello/hsxuj\"",
+                            "content-type": "application/json; charset=utf-8",
+                            "content-length": "13",
+                            "etag": "W/\"d-X7zzcBORmHVzBfO4n/4UzEkpfkY\"",
+                            "date": "Tue, 07 May 2017 09:11:28 GMT",
+                            "connection": "close"
+                          },
+                          "body": "{\"num\":56789}"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+  /importAppsFiles:
+    post:
+      tags:
+      - "utils"
+      summary: "Import Apps Files"
+      description: ""
+      operationId: "importAppsFiles"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: body
+        name: body
+        description: "An App object that needs to be added"
+        required: true
+        schema:
+          type: object
+          required:
+          - port
+          - appFolder
+          properties:
+            port:
+              type: integer
+            appFolder:
+              type: string
+          example:
+            port: 8081
+            appFolder: "C:/apps_root_import_folder"
+      responses:
+        201:
+          description: "Import success"
+definitions:
   App:
-    type: "object"
+    type: object
     required:
     - "name"
     - "servers"
     - "basePath"
     properties:
+      id:
+        type: string
       name:
-        type: "string"
+        type: string
       servers:
-        type: "array"
+        type: array
         items:
-          type: "string"
+          type: string
       basePath:
-        type: "string"
-  ApiResponse:
-    type: "object"
+        type: string
+  AppHal:
+    type: object
+    required:
+    - id
+    - name
+    - servers
+    - basePath
+    - versionNumbers
+    - _links
     properties:
-      code:
-        type: "integer"
-        format: "int32"
-      type:
-        type: "string"
-      message:
-        type: "string"
-externalDocs:
-  description: "Find out more about Swagger"
-  url: "http://swagger.io"
+      id:
+        type: string
+      name:
+        type: string
+      servers:
+        type: array
+        items:
+          type: string
+      basePath:
+        type: string
+      versionNumbers:
+        type: array
+        items:
+          type: string
+      _links:
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+          versions:
+            type: object
+            properties:
+              href:
+                type: string
+  AppVersion:
+    type: object
+    required:
+    - "v"
+    - "path"
+    - "contracts"
+    properties:
+      v:
+        type: string
+      path:
+        type: string
+      contracts:
+        type: array
+        items:
+          type: string
+  AppVersionHal:
+    type: object
+    required:
+    - v
+    - path
+    - contracts
+    - _links
+    properties:
+      v:
+        type: string
+      path:
+        type: string
+      contracts:
+        type: array
+        items:
+          type: string
+      _links:
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+          parent:
+            type: object
+            properties:
+              href:
+                type: string
+          contracts:
+            type: object
+            properties:
+              href:
+                type: string
+  ContractHal:
+    type: object
+    required:
+    - id
+    - name
+    - contractScript
+    - _links
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      contractScript:
+        type: string
+      _links:
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+  Wirestub:
+    type: object
+    required:
+    - port
+    properties:
+      port:
+        type: integer
+    example:
+      port: 8081
+  Wiretest:
+    type: object
+    required:
+    - server
+    properties:
+      server:
+        type: string
+    example:
+      port: "http://localhost:8001"
+  WiretestResult:
+    type: object
+    properties:
+      app:
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+      testInfo:
+        type: object
+        properties:
+          timeMs:
+            type: number
+            format: float
+          success:
+            type: boolean
+      results:
+        type: array
+        items:
+          type: object
+          properties:
+            versionNo:
+              type: string
+            testInfo:
+              type: object
+              properties:
+                timeMs:
+                  type: number
+                  format: float
+                success:
+                  type: boolean
+            results:
+              type: array
+              items:
+                type: object
+                properties:
+                  testInfo:
+                    type: object
+                    properties:
+                      timeMs:
+                        type: number
+                        format: float
+                      success:
+                        type: boolean
+                      errors:
+                        type: array
+                        items:
+                          type: string
+                      appId:
+                        type: string
+                      version:
+                        type: string
+                      contract:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                  request:
+                    type: object
+                    properties:
+                      method:
+                        type: string
+                      urlPath:
+                        type: string
+                      queryParams:
+                        type: object
+                      headers:
+                        type: object
+                      body:
+                        type: object
+                  expectedResponseScript:
+                    type: string
+                  response:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                      headers:
+                        type: object
+                      body:
+                        type: string

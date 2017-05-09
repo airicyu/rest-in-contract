@@ -1,4 +1,5 @@
 # rest-in-contract
+
 [![npm version](https://img.shields.io/npm/v/rest-in-contract.svg)](https://www.npmjs.com/package/rest-in-contract)
 [![node](https://img.shields.io/node/v/rest-in-contract.svg)](https://www.npmjs.com/package/rest-in-contract)
 [![Codecov branch](https://img.shields.io/codecov/c/github/airicyu/rest-in-contract/master.svg)](https://codecov.io/gh/airicyu/rest-in-contract)
@@ -28,6 +29,7 @@ But some builtin feature is not done yet. (e.g: Suppoting more middleware functi
 Since it is still beta version, we are not finalized the v1.0 in-the-box features yet.
 
 ## Roadmaps
+
 - Add Unit tests
 - Update documents
 - Database Storage
@@ -36,7 +38,7 @@ Since it is still beta version, we are not finalized the v1.0 in-the-box feature
 - Java/nodejs test integration client
 - Study on integration with Swagger
 
-# What is rest-in-contract
+## What is rest-in-contract
 
 Rest-in-contract Project is a product to let you embrace **[Consumer-driven contracts](https://martinfowler.com/articles/consumerDrivenContracts.html)**. It is REST in nature so that it fits for integrating with all kind of programming languages.
 For more detail about `Project rest-in-contract`, you may have a look in our [Project rest-in-contract's Homepage](http://blog.airic-yu.com/2062/project-rest-in-contracts) for detail introduction.
@@ -44,15 +46,17 @@ For more detail about `Project rest-in-contract`, you may have a look in our [Pr
 This `rest-in-contract` node module is a module for the Local Contract Server which is the core part of the Rest-in-contract project.
 
 ## Slideshare: Basic Concepts & Flows
+
 [Rest in-contract basic concepts & flows](https://www.slideshare.net/EricYu28/rest-incontract-basic-concepts-flows-75659518)
 
 ------------------------
 
-# Samples
+## Samples
 
-## Hello world
+### Hello world
 
 Starting server:
+
 ```javascript
 'use strict';
 
@@ -70,13 +74,15 @@ contractServer.initRestServer({
 ### Server
 
 #### Operation: Import apps from files
-- Endpoint: POST http://localhost:8000/api/v1/importAppsFiles
+
+- Endpoint: POST `http://localhost:8000/api/v1/importAppsFiles`
 - Consume type: application/json
 - Parameters:
-    - appFolder: The root import folder
+  - appFolder: The root import folder
 
 Request:
-```
+
+```http
 POST http://localhost:8000/api/v1/importAppsFiles
 Content-type: application/json
 
@@ -87,7 +93,8 @@ Content-type: application/json
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 201 Created
 X-Powered-By: Express
 Content-Type: text/html; charset=utf-8
@@ -104,15 +111,17 @@ importAppsFiles done
 ### App
 
 #### Operation: Create app
-- Endpoint: POST http://localhost:8000/api/v1/apps
+
+- Endpoint: POST `http://localhost:8000/api/v1/apps`
 - Consume type: application/json
 - Parameters:
-    - name: App name
-    - servers: Array of server domains
-    - basePath: App base path
+  - name: App name
+  - servers: Array of server domains
+  - basePath: App base path
 
 Request:
-```
+
+```http
 POST http://localhost:8000/api/v1/apps
 Content-type: application/json
 
@@ -124,7 +133,8 @@ Content-type: application/json
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 201 Created
 X-Powered-By: Express
 location: /api/v1/apps/0fe5fd4e-55db-4a54-9dd5-29bec05f7793
@@ -138,16 +148,19 @@ App created
 ```
 
 #### Operation: Get all apps
-- Endpoint: GET http://localhost:8000/api/v1/apps
+
+- Endpoint: GET `http://localhost:8000/api/v1/apps`
 - Produce type: application/json
 
 Request:
-```
+
+```http
 GET http://localhost:8000/api/v1/apps
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
@@ -161,17 +174,20 @@ Connection: keep-alive
 ]
 ```
 
-### Operation: Get app
-- Endpoint: GET http://localhost:8000/api/v1/apps/{{appId}}
+#### Operation: Get app
+
+- Endpoint: GET `http://localhost:8000/api/v1/apps/{{appId}}`
 - Produce type: application/json+hal
 
 Request:
-```
+
+```http
 GET http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
@@ -202,15 +218,17 @@ Connection: keep-alive
 ```
 
 #### Operation: Update app
-- Endpoint: PUT http://localhost:8000/api/v1/apps/{{appId}}
+
+- Endpoint: PUT `http://localhost:8000/api/v1/apps/{{appId}}`
 - Consume type: application/json
 - Parameters:
-    - name: App name
-    - servers: Array of server domains
-    - basePath: App base path
+  - name: App name
+  - servers: Array of server domains
+  - basePath: App base path
 
 Request:
-```
+
+```http
 PUT http://localhost:8000/api/v1/apps
 Content-type: application/json
 
@@ -222,7 +240,8 @@ Content-type: application/json
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 204 No Content
 X-Powered-By: Express
 ETag: W/"a-fKaPqGKTASLjiIDuRL5tqgGTwrc"
@@ -230,17 +249,19 @@ Date: Wed, 03 May 2017 16:04:03 GMT
 Connection: keep-alive
 ```
 
-
 #### Operation: Delete app
-- Endpoint: DELETE http://localhost:8000/api/v1/apps/{{appId}}
+
+- Endpoint: DELETE `http://localhost:8000/api/v1/apps/{{appId}}`
 
 Request:
-```
+
+```http
 DELETE http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 204 No Content
 X-Powered-By: Express
 ETag: W/"a-fKaPqGKTASLjiIDuRL5tqgGTwrc"
@@ -253,27 +274,30 @@ Connection: keep-alive
 ### App Version
 
 #### Operation: Create app version
-- Endpoint: POST http://localhost:8000/api/v1/apps/{{appId}}/versions
+
+- Endpoint: POST `http://localhost:8000/api/v1/apps/{{appId}}/versions`
 - Consume type: application/json
 - Parameters:
-    - v: Version number
-    - path: This version's API base path. Support template value {{app.basePath}} and {{version.v}}.
-    - contracts: Array of contract IDs
+  - v: Version number
+  - path: This version's API base path. Support template value {{app.basePath}} and {{version.v}}.
+  - contracts: Array of contract IDs
 
 Request:
-```
+
+```http
 POST http://localhost:8000/api/v1/apps/{{appId}}/versions
 Content-type: application/json
 
 {
-	"v": "0.0.1",
-	"path": "{{app.basePath}}/v{{version.v}}",
-	"contracts": []
+  "v": "0.0.1",
+  "path": "{{app.basePath}}/v{{version.v}}",
+  "contracts": []
 }
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 201 Created
 X-Powered-By: Express
 location: /api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/versions/0.0.1
@@ -287,16 +311,19 @@ Version created
 ```
 
 #### Operation: Get all app versions
-- Endpoint: GET http://localhost:8000/api/v1/apps/{{appId}}/versions
+
+- Endpoint: GET `http://localhost:8000/api/v1/apps/{{appId}}/versions`
 - Produce type: application/json
 
 Request:
-```
+
+```http
 GET http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/versions
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
@@ -310,17 +337,20 @@ Connection: keep-alive
 ]
 ```
 
-### Operation: Get app version
-- Endpoint: GET http://localhost:8000/api/v1/apps/{{appId}}/versions/{{versionNo}}
+#### Operation: Get app version
+
+- Endpoint: GET `http://localhost:8000/api/v1/apps/{{appId}}/versions/{{versionNo}}`
 - Produce type: application/json+hal
 
 Request:
-```
+
+```http
 GET http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/versions/{{versionNo}}
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
@@ -350,29 +380,32 @@ Connection: keep-alive
 ```
 
 #### Operation: Update app version
-- Endpoint: PUT http://localhost:8000/api/v1/apps/{{appId}}/versions/{{versionNo}}
+
+- Endpoint: PUT `http://localhost:8000/api/v1/apps/{{appId}}/versions/{{versionNo}}`
 - Consume type: application/json
 - Parameters:
-    - v: Version number
-    - path: This version's API base path. Support template value {{app.basePath}} and {{version.v}}.
-    - contracts: Array of contract IDs
+  - v: Version number
+  - path: This version's API base path. Support template value {{app.basePath}} and {{version.v}}.
+  - contracts: Array of contract IDs
 
 Request:
-```
+
+```http
 Put http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/versions/0.0.1
 Content-type: application/json
 
 {
-	"v": "0.0.1",
-	"path": "{{app.basePath}}/v{{version.v}}",
-	"contracts": [
-        "{{contractId}}"
-    ]
+  "v": "0.0.1",
+  "path": "{{app.basePath}}/v{{version.v}}",
+  "contracts": [
+    "{{contractId}}"
+  ]
 }
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 204 No Content
 X-Powered-By: Express
 ETag: W/"a-fKaPqGKTASLjiIDuRL5tqgGTwrc"
@@ -380,17 +413,19 @@ Date: Wed, 03 May 2017 16:37:55 GMT
 Connection: keep-alive
 ```
 
-
 #### Operation: Delete app version
-- Endpoint: DELETE http://localhost:8000/api/v1/apps/{{appId}}/versions/{{versionNo}}
+
+- Endpoint: DELETE `http://localhost:8000/api/v1/apps/{{appId}}/versions/{{versionNo}}`
 
 Request:
-```
+
+```http
 DELETE http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/versions/0.0.1
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 204 No Content
 X-Powered-By: Express
 ETag: W/"a-fKaPqGKTASLjiIDuRL5tqgGTwrc"
@@ -403,17 +438,19 @@ Connection: keep-alive
 ### Contract
 
 #### Operation: Create contract
-- Endpoint: POST http://localhost:8000/api/v1/contracts
+
+- Endpoint: POST `http://localhost:8000/api/v1/contracts`
 - Consume type: application/vnd.js.contract
 
 Request:
-```
+
+```http
 POST http://localhost:8000/api/v1/contracts
 Content-type: application/vnd.js.contract
 
-module.exports = 
+module.exports =
 {
-	"name": "testing for hello contract",
+  "name": "testing for hello contract",
     "request": {
         "method": "POST",
         "urlPath": value({stub: regex("/hello/[a-z]*"), test: "/hello/apple"}),
@@ -444,7 +481,8 @@ module.exports =
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 201 Created
 X-Powered-By: Express
 location: /api/v1/contracts/570c74ee-5387-4909-b2a3-a95422aaee33
@@ -458,16 +496,19 @@ Contract created
 ```
 
 #### Operation: Get all contracts
-- Endpoint: GET http://localhost:8000/api/v1/contracts
+
+- Endpoint: GET `http://localhost:8000/api/v1/contracts`
 - Produce type: application/json
 
 Request:
-```
+
+```http
 GET http://localhost:8000/api/v1/contracts
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
@@ -481,20 +522,23 @@ Connection: keep-alive
 ]
 ```
 
-### Operation: Get contract
-- Endpoint: GET http://localhost:8000/api/v1/contracts/{{contractId}}
+#### Operation: Get contract
+
+- Endpoint: GET `http://localhost:8000/api/v1/contracts/{{contractId}}`
 - Produce type: application/vnd.js.contract or application/json
 
 For produce type `application/vnd.js.contract`,
 
 Request:
-```
+
+```http
 GET http://localhost:8000/api/v1/apps/94923fbd-9092-4a46-ad65-0d8a2e2f551e
 Accept: application/vnd.js.contract
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Content-Type: application/vnd.js.contract; charset=utf-8
@@ -556,13 +600,15 @@ module.exports = {
 For produce type `application/json`,
 
 Request:
-```
+
+```http
 GET http://localhost:8000/api/v1/apps/94923fbd-9092-4a46-ad65-0d8a2e2f551e
 Accept: application/json
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
@@ -584,15 +630,18 @@ Connection: keep-alive
 ```
 
 #### Operation: Delete contract
-- Endpoint: DELETE http://localhost:8000/api/v1/contracts/{{contractId}}
+
+- Endpoint: DELETE `http://localhost:8000/api/v1/contracts/{{contractId}}`
 
 Request:
-```
+
+```http
 DELETE http://localhost:8000/api/v1/contracts/94923fbd-9092-4a46-ad65-0d8a2e2f551e
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 204 No Content
 X-Powered-By: Express
 ETag: W/"a-fKaPqGKTASLjiIDuRL5tqgGTwrc"
@@ -605,13 +654,15 @@ Connection: keep-alive
 ### App Wirestub
 
 #### Operation: Create app wirestub
-- Endpoint: POST http://localhost:8000/api/v1/apps/{{appId}}/wirestubs
+
+- Endpoint: POST `http://localhost:8000/api/v1/apps/{{appId}}/wirestubs`
 - Consume type: application/json
 - Parameters:
-    - port: stub server port
+  - port: stub server port
 
 Request:
-```
+
+```http
 POST http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/wirestubs
 Content-type: application/json
 
@@ -621,7 +672,8 @@ Content-type: application/json
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 201 Created
 X-Powered-By: Express
 location: http://localhost:8001
@@ -634,17 +686,20 @@ Connection: keep-alive
 Wirestub created
 ```
 
-### Operation: Get app wirestub
-- Endpoint: GET http://localhost:8000/api/v1/apps/{{appId}}/wirestubs
+#### Operation: Get app wirestub
+
+- Endpoint: GET `http://localhost:8000/api/v1/apps/{{appId}}/wirestubs`
 - Produce type: application/json
 
 Request:
-```
+
+```http
 GET http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/wirestubs
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
@@ -659,15 +714,18 @@ Connection: keep-alive
 ```
 
 #### Operation: Delete app wirestub
-- Endpoint: DELETE http://localhost:8000/api/v1/apps/{{appId}}/wirestubs
+
+- Endpoint: DELETE `http://localhost:8000/api/v1/apps/{{appId}}/wirestubs`
 
 Request:
-```
+
+```http
 DELETE http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/wirestubs
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 204 No Content
 X-Powered-By: Express
 ETag: W/"10-Gk3HW1jO8GmUH/09/yQs20dUTAc"
@@ -680,13 +738,15 @@ Connection: keep-alive
 ### App Wiretest
 
 #### Operation: Create app wiretest
-- Endpoint: POST http://localhost:8000/api/v1/apps/{{appId}}/wiretests
+
+- Endpoint: POST `http://localhost:8000/api/v1/apps/{{appId}}/wiretests`
 - Consume type: application/json
 - Parameters:
-    - server: The server which targeted for testing
+  - server: The server which targeted for testing
 
 Request:
-```
+
+```http
 POST http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/wiretests
 Content-type: application/json
 
@@ -696,67 +756,142 @@ Content-type: application/json
 ```
 
 Response:
-```
+
+```http
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
-Content-Length: 1040
+Content-Length: 2990
 ETag: W/"410-60OQ8mFitlhnCKmy5Ej8e5MfpvA"
 Date: Wed, 03 May 2017 17:07:55 GMT
 Connection: keep-alive
 
 {
-  "0.0.1": {
-    "94923fbd-9092-4a46-ad65-0d8a2e2f551e": {
+  "app": {
+    "id": "80a69a44-3f3b-48c1-a7d1-b34b89117e75",
+    "name": "test"
+  },
+  "testInfo": {
+    "timeMS": 76.2579990029335,
+    "success": true
+  },
+  "results": [
+    {
+      "versionNo": "0.0.1",
       "testInfo": {
-        "timeMS": 24.936602011322975,
-        "success": true,
-        "errors": [],
-        "appId": "80a69a44-3f3b-48c1-a7d1-b34b89117e75",
-        "version": "0.0.1",
-        "contract": {
-          "id": "94923fbd-9092-4a46-ad65-0d8a2e2f551e",
-          "name": "testing for hello contract"
-        }
+        "timeMS": 75.7432410120964,
+        "success": true
       },
-      "request": {
-        "method": "POST",
-        "urlPath": "http://localhost:8001/api/v0.0.1/hello/apple",
-        "queryParams": {
-          "a": "b"
+      "results": [
+        {
+          "testInfo": {
+            "timeMS": 51.209954023361206,
+            "success": true,
+            "errors": [],
+            "appId": "80a69a44-3f3b-48c1-a7d1-b34b89117e75",
+            "version": "0.0.1",
+            "contract": {
+              "id": "b9135ab0-20d2-43f3-b947-3bac5b061f61",
+              "name": "function examples"
+            }
+          },
+          "request": {
+            "method": "POST",
+            "urlPath": "http://localhost:8001/api/v0.0.1/function_examples",
+            "queryParams": {},
+            "headers": {
+              "authorization": "Bearer 0a4b6c5d",
+              "Content-type": "application/json"
+            },
+            "body": {
+              "test": {
+                "numberString": "13579",
+                "number": 24680,
+                "arrayOfValues": [
+                  "apple",
+                  "orange",
+                  "banana"
+                ],
+                "regular expression": "acp-113520",
+                "name": "Cristina Hayes",
+                "email": "Cristina.Hayes82@yahoo.com",
+                "phone": "1-454-765-8135",
+                "date": "2017-05-07",
+                "words": "reiciendis est minima",
+                "uuid4": "510552bc-c017-452a-bd51-7b1b3d3a5f13",
+                "multipleChoices": "class A",
+                "notAnyOf": "c"
+              }
+            }
+          },
+          "expectedResponseScript": "{ \"status\": 200, \"body\": { \"num\": integer({\"gt\":0,\"lt\":60000}), \"reqBodyJsonParams\": jsonpath(\"$.req.body.test\") }, \"headers\": { \"test-header\": \"dummy\", \"test-regex-header\": regex(\"\\\"/hello/[a-z]{3,5}\\\"\") } }",
+          "response": {
+            "status": 200,
+            "headers": {
+              "x-powered-by": "Express",
+              "test-header": "dummy",
+              "test-regex-header": "\"/hello/njm\"",
+              "content-type": "application/json; charset=utf-8",
+              "content-length": "381",
+              "etag": "W/\"17d-j5SCn3LsQSGqO0vZ5zj/AHLJ8qg\"",
+              "date": "Tue, 09 May 2017 09:11:28 GMT",
+              "connection": "close"
+            },
+            "body": "{\"num\":56789,\"reqBodyJsonParams\":[{\"numberString\":\"13579\",\"number\":24680,\"arrayOfValues\":[\"apple\",\"orange\",\"banana\"],\"regular expression\":\"acp-113520\",\"name\":\"Cristina Hayes\",\"email\":\"Cristina.Hayes82@yahoo.com\",\"phone\":\"1-454-765-8135\",\"date\":\"2017-05-07\",\"words\":\"reiciendis est minima\",\"uuid4\":\"510552bc-c017-452a-bd51-7b1b3d3a5f13\",\"multipleChoices\":\"class A\",\"notAnyOf\":\"c\"}]}"
+          }
         },
-        "headers": {
-          "Content-type": "application/json"
-        },
-        "body": {
-          "test": {
-            "a": "13579",
-            "b": 24680,
-            "c": [
-              "apple",
-              "orange",
-              "banana"
-            ]
+        {
+          "testInfo": {
+            "timeMS": 22.899529993534088,
+            "success": true,
+            "errors": [],
+            "appId": "80a69a44-3f3b-48c1-a7d1-b34b89117e75",
+            "version": "0.0.1",
+            "contract": {
+              "id": "94923fbd-9092-4a46-ad65-0d8a2e2f551e",
+              "name": "testing for hello contract"
+            }
+          },
+          "request": {
+            "method": "POST",
+            "urlPath": "http://localhost:8001/api/v0.0.1/hello/apple",
+            "queryParams": {
+              "a": "b"
+            },
+            "headers": {
+              "Content-type": "application/json"
+            },
+            "body": {
+              "test": {
+                "a": "13579",
+                "b": 24680,
+                "c": [
+                  "apple",
+                  "orange",
+                  "banana"
+                ]
+              }
+            }
+          },
+          "expectedResponseScript": "{ \"status\": 200, \"body\": { \"num\": integer({\"gt\":0,\"lt\":60000}) }, \"headers\": { \"test-header\": \"dummy\", \"test-regex-header\": regex(\"\\\"/hello/[a-z]{3,5}\\\"\") } }",
+          "response": {
+            "status": 200,
+            "headers": {
+              "x-powered-by": "Express",
+              "test-header": "dummy",
+              "test-regex-header": "\"/hello/hsxuj\"",
+              "content-type": "application/json; charset=utf-8",
+              "content-length": "13",
+              "etag": "W/\"d-X7zzcBORmHVzBfO4n/4UzEkpfkY\"",
+              "date": "Tue, 09 May 2017 09:11:28 GMT",
+              "connection": "close"
+            },
+            "body": "{\"num\":56789}"
           }
         }
-      },
-      "expectedResponseScript": "{ \"status\": 200, \"body\": { \"num\": integer({\"gt\":0,\"lt\":60000}) }, \"headers\": { \"test-header\": \"dummy\", \"test-regex-header\": regex(\"\\\"/hello/[a-z]{3,5}\\\"\") } }",
-      "response": {
-        "status": 200,
-        "headers": {
-          "x-powered-by": "Express",
-          "test-header": "dummy",
-          "test-regex-header": "\"/hello/wqadm\"",
-          "content-type": "application/json; charset=utf-8",
-          "content-length": "13",
-          "etag": "W/\"d-X7zzcBORmHVzBfO4n/4UzEkpfkY\"",
-          "date": "Wed, 03 May 2017 17:07:55 GMT",
-          "connection": "close"
-        },
-        "body": "{\"num\":56789}"
-      }
+      ]
     }
-  }
+  ]
 }
 ```
 

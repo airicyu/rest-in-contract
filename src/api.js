@@ -63,4 +63,6 @@ const api = {
     importAppsFiles: importHelper.importAppsFiles
 };
 
-Object.assign(module.exports, api);
+for(let key in api){
+    module.exports[key] = api[key];
+}

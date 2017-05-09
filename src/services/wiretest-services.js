@@ -3,7 +3,7 @@
 const { wirestub } = require('./../models/models');
 
 const { Timer } = require('./../utils/timer-utils');
-const dsl = require('./../contract-script/dsl/dsl');
+const dsl = require('rest-in-contract-dsl');
 
 const { recurrsiveToString } = dsl.utils;
 const { Middleware } = dsl.baseTypes;
@@ -67,26 +67,58 @@ function getServerPath(app, version, wiretest) {
 
 
 async function testApp(app, wiretest) {
-    let appTestRecords = {};
+
+    let timer = new Timer();
+
+    let appTestRecord = {
+        app: {
+            id: app.id,
+            name: app.name
+        },
+        testInfo: {
+            timeMS: null,
+            success: false
+        },
+        results: []
+    };
+    let appTestRecords = [];
     for (let version of app.versions) {
         let appVersionTestRecords = await testAppVersion(app, version, wiretest);
-        appTestRecords[version.v] = appVersionTestRecords;
+        appTestRecords.push(appVersionTestRecords);
     }
-    return appTestRecords;
+    appTestRecord.results = appTestRecords;
+    appTestRecord.testInfo.timeMS = timer.stopAndGetDuration();
+    appTestRecord.testInfo.success = !appTestRecord.results.map(r=>r.testInfo.success).includes(false)
+    return appTestRecord;
 }
 
 async function testAppVersion(app, version, wiretest) {
-    let appVersionTestRecords = {};
+
+    let timer = new Timer();
+
+    let appVersionTestRecord = {
+        versionNo: version.v,
+        testInfo: {
+            timeMS: null,
+            success: false
+        },
+        results: []
+    };
+    let appVersionTestRecords = [];
     for (let contractId of version.contracts) {
         let [error, contract] = (await contractServices.get(contractId)).get();
         if (contract) {
             let contractId = contract.id;
             let record = await testContract(app, version, contract, wiretest);
-            appVersionTestRecords[contractId] = record;
+            appVersionTestRecords.push(record);
         }
     }
 
-    return appVersionTestRecords;
+    appVersionTestRecord.results = appVersionTestRecords;
+    appVersionTestRecord.testInfo.timeMS = timer.stopAndGetDuration();
+    appVersionTestRecord.testInfo.success = !appVersionTestRecord.results.map(r=>r.testInfo.success).includes(false)
+
+    return appVersionTestRecord;
 }
 
 async function testContract(app, version, contract, wiretest) {
@@ -187,7 +219,7 @@ async function testContract(app, version, contract, wiretest) {
     let resHeaders = {};
     for (let headerKey in expectResponseContext.headers) {
         let headerValue = expectResponseContext.headers[headerKey]
-        if (headerValue instanceof Middleware) {
+        if (Middleware.isMiddleware(headerValue)) {
             headerValue = recurrsiveEvaluate(headerValue).evaluate(evaluateContext);
         }
         resHeaders[headerKey] = headerValue;
@@ -223,7 +255,7 @@ async function testContract(app, version, contract, wiretest) {
     };
 
     if (testRequestError) {
-        record.testInfo.errors.push(testRequestError);
+        record.testInfo.errors.push(testRequestError.message);
         record.testInfo.timeMS = timer.stopAndGetDuration();
         return record;
     }
@@ -234,7 +266,7 @@ async function testContract(app, version, contract, wiretest) {
         expect(statusCompareResult).to.be.equals(true, 'Expect response statusCode equals expected value.');
     } catch (e) {
         console.error(e);
-        record.testInfo.errors.push(e);
+        record.testInfo.errors.push(e.message);
     }
 
     /* validate headers */
@@ -245,7 +277,7 @@ async function testContract(app, version, contract, wiretest) {
             expect(headerCompareResult).to.be.equals(true, 'Expected response header equals expected value.');
         } catch (e) {
             console.error(e);
-            record.testInfo.errors.push(e);
+            record.testInfo.errors.push(e.message);
         }
     }
 
@@ -259,7 +291,7 @@ async function testContract(app, version, contract, wiretest) {
         expect(bodyCompareResult || jsonBodyCompareResult).to.be.equals(true, 'Expected response body equals expected value.');
     } catch (e) {
         console.error(e);
-        record.testInfo.errors.push(e);
+        record.testInfo.errors.push(e.message);
     }
 
     if (record.testInfo.errors.length === 0) {

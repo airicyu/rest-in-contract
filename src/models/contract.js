@@ -1,7 +1,7 @@
 const Request = require('./request.js');
 const Response = require('./response.js');
 const uuid = require('uuid/v4');
-const dsl = require('./../contract-script/dsl/dsl');
+const dsl = require('rest-in-contract-dsl');
 
 const { recurrsiveToString } = dsl.utils;
 const { Middleware } = dsl.baseTypes;
@@ -16,12 +16,14 @@ class Contract {
         this.name = props.name || this.id;
         this.request = new Request(props.request || {});
         this.response = new Response(props.response || {});
+        this.rawScript = props.rawScript;
     }
 
     static newFromScript(contractScript) {
         let scriptOutputObject = sandboxRunner.runScript(contractScript);
         if (scriptOutputObject) {
             let contract = new Contract(scriptOutputObject, {});
+            contract.rawScript = beautify(contractScript, { indent_size: 2 });
             return contract;
         }
         return null;
@@ -33,21 +35,25 @@ class Contract {
         let contractHal = new hal.Resource({
             id: contract.id,
             name: contract.name,
-            contractsScript: contract.toContractCompatScript()
+            contractsScript: this.rawScript//contract.toContractCompatScript()
         }, `/api/v1/contracts/${contract.id}`);
         return contractHal;
     }
 
+/*
     toContractCompatScript() {
         let contractScript = "module.exports = " + recurrsiveToString(this);
         return contractScript;
     }
+    */
 
+/*
     toContractScript() {
         let contractScript = "module.exports = " + recurrsiveToString(this);
         contractScript = beautify(contractScript, { indent_size: 2 })
         return contractScript;
     }
+    
 
     toStubContractScript() {
         let contractScript = "module.exports = " + recurrsiveToString(this);
@@ -57,16 +63,17 @@ class Contract {
         let stubContractScript = "module.exports = " + recurrsiveToString(stubContract);
         stubContractScript = beautify(stubContractScript, { indent_size: 2 })
         return stubContractScript;
-    }
+    }*/
 
     toStubContract() {
-        let contractScript = "module.exports = " + recurrsiveToString(this);
+        let contractScript = this.rawScript;
+        //let contractScript = "module.exports = " + recurrsiveToString(this);
         let stubContract = new Contract(sandboxRunner.runScript(contractScript, {
             value: stubValue
         }));
         return stubContract;
     }
-
+/*
     toTestingContractScript() {
         let contractScript = "module.exports = " + recurrsiveToString(this);
         let testContract = new Contract(sandboxRunner.runScript(contractScript, {
@@ -75,10 +82,11 @@ class Contract {
         let testContractScript = "module.exports = " + recurrsiveToString(testContract);
         testContractScript = beautify(testContractScript, { indent_size: 2 })
         return testContractScript;
-    }
+    }*/
 
     toTestingContract() {
-        let contractScript = "module.exports = " + recurrsiveToString(this);
+        //let contractScript = "module.exports = " + recurrsiveToString(this);
+        let contractScript = this.rawScript;
         let testContract = new Contract(sandboxRunner.runScript(contractScript, {
             value: testValue
         }));
@@ -164,7 +172,7 @@ class Contract {
         }
 
         let responseStatus = self.response.status;
-        if (responseStatus instanceof Middleware) {
+        if (Middleware.isMiddleware(responseStatus)) {
             responseStatus = recurrsiveEvaluate(responseStatus).evaluate(evaluateContext);
             responseStatus = recurrsiveMock(responseStatus).mock();
         }

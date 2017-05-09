@@ -49,11 +49,13 @@ router.get('/:contractId', async(req, res) => {
             return res.send(contract.toHal());
         } else if (req.headers['accept'] === 'application/vnd.js.contract') {
             res.set('content-type', 'application/vnd.js.contract')
-            return res.send(contract.toContractScript());
+            return res.send(contract.rawScript);
+            //return res.send(contract.toContractScript());
         }
 
         res.set('content-type', 'application/vnd.js.contract')
-        return res.send(contract.toContractScript());
+        return res.send(contract.rawScript);
+        //return res.send(contract.toContractScript());
 
     } else {
         return res.status(404).send('Contract not found');
