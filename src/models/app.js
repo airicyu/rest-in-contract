@@ -3,7 +3,7 @@
 const uuidV4 = require('uuid/v4');
 const Version = require('./version');
 const hal = require('hal');
-const moduleAPIVersion = "1";
+const moduleAPIVersion = require('./../../package.json')['api-version'];
 
 class App {
     constructor(props = {}) {

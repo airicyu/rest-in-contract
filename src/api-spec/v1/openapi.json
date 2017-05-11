@@ -1,0 +1,1158 @@
+{
+  "openapi": "3.0.0-RC1",
+  "servers": [
+    {
+      "url": "http://localhost/api/v1"
+    }
+  ],
+  "info": {
+    "description": "Rest-in-contract Project is a product to let you embrace [Consumer-driven contracts](https://martinfowler.com/articles/consumerDrivenContracts.html). It is REST in nature so that it fits for integrating with all kind of programming languages. For more detail about [Project rest-in-contract](http://blog.airic-yu.com/2062/project-rest-in-contracts), you may have a look in our Project rest-in-contract's Homepage for detail introduction.\n    \nThis rest-in-contract node module is a module for the Local Contract Server which is the core part of the Rest-in-contract project.\n",
+    "version": "1.0",
+    "title": "rest-in-contract",
+    "contact": {
+      "email": "airic.yu@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more in Github page",
+    "url": "https://github.com/airicyu/rest-in-contract"
+  },
+  "tags": [
+    {
+      "name": "server",
+      "description": "Contract Server APIs"
+    },
+    {
+      "name": "app",
+      "description": "Apps"
+    },
+    {
+      "name": "app version",
+      "description": "App Versions"
+    },
+    {
+      "name": "contract",
+      "description": "API Contracts"
+    }
+  ],
+  "paths": {
+    "/apps": {
+      "post": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Add an App",
+        "description": "",
+        "operationId": "addApp",
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "App created"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "description": "An App object that needs to be added",
+              "schema": {
+                "$ref": "#/components/schemas/App"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Get all Apps",
+        "description": "",
+        "operationId": "getAllAppsId",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apps/{appId}": {
+      "get": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Get an App",
+        "description": "",
+        "operationId": "getApp",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appId",
+            "description": "App ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppHal"
+                }
+              },
+              "application/json+hal": {
+                "examples": [
+                  {
+                    "_links": {
+                      "self": {
+                        "href": "/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75"
+                      },
+                      "versions": {
+                        "href": "/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/versions"
+                      }
+                    },
+                    "id": "80a69a44-3f3b-48c1-a7d1-b34b89117e75",
+                    "name": "test",
+                    "servers": [
+                      "http://example.com:8001"
+                    ],
+                    "basepath": "/api",
+                    "versionNumbers": [
+                      "0.0.1"
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "404": {
+            "description": "App not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Update an existing App",
+        "description": "",
+        "operationId": "updateApp",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appId",
+            "description": "App ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Update success"
+          },
+          "404": {
+            "description": "App not found"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "description": "An App object that needs to be updated",
+              "schema": {
+                "$ref": "#/components/schemas/App"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Delete an App",
+        "description": "",
+        "operationId": "deleteApp",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appId",
+            "description": "App ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete success"
+          },
+          "404": {
+            "description": "App not found"
+          }
+        }
+      }
+    },
+    "/apps/{appId}/versions": {
+      "post": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Add an App Version",
+        "description": "",
+        "operationId": "addAppVersion",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appId",
+            "description": "App ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "App Version created"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "description": "An App Version object that needs to be added",
+              "schema": {
+                "$ref": "#/components/schemas/AppVersion"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Get all App Version Numbers",
+        "description": "",
+        "operationId": "getAllAppVersions",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "App not found"
+          }
+        }
+      }
+    },
+    "/apps/{appId}/versions/{versionNo}": {
+      "get": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Get an App Version",
+        "description": "",
+        "operationId": "getAppVersion",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appId",
+            "description": "App ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "versionNo",
+            "description": "Version number",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppVersionHal"
+                }
+              },
+              "application/json+hal": {
+                "examples": [
+                  {
+                    "_links": {
+                      "self": {
+                        "href": "/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/versions/0.0.1"
+                      },
+                      "parent": {
+                        "href": "/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75"
+                      },
+                      "contracts": {
+                        "href": "/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/versions/0.0.1/contracts"
+                      }
+                    },
+                    "v": "80a69a44-3f3b-48c1-a7d1-b34b89117e75",
+                    "path": "{{app.basePath}}/v{{version.v}}",
+                    "contracts": [
+                      "94923fbd-9092-4a46-ad65-0d8a2e2f551e"
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "404": {
+            "description": "App not found or App Version not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Update an existing App Version",
+        "description": "",
+        "operationId": "updateAppVersion",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appId",
+            "description": "App ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "versionNo",
+            "description": "Version number",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Update success"
+          },
+          "404": {
+            "description": "App not found or App Version not found"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "description": "App Version object that needs to be updated",
+              "schema": {
+                "$ref": "#/components/schemas/AppVersion"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Delete an App Version",
+        "description": "",
+        "operationId": "deleteAppVersion",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appId",
+            "description": "App ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "versionNo",
+            "description": "Version number",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete success"
+          },
+          "404": {
+            "description": "App not found or App Version not found"
+          }
+        }
+      }
+    },
+    "/contracts": {
+      "post": {
+        "tags": [
+          "contract"
+        ],
+        "summary": "Add an Contract",
+        "description": "",
+        "operationId": "addContract",
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "Contract created"
+          }
+        },
+        "requestBody": {
+          "$ref": "#/components/requestBodies/body"
+        }
+      },
+      "get": {
+        "tags": [
+          "contract"
+        ],
+        "summary": "Get all Contracts",
+        "description": "",
+        "operationId": "getAllContracts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contracts/{contractId}": {
+      "get": {
+        "tags": [
+          "contract"
+        ],
+        "summary": "Get an Contract",
+        "description": "",
+        "operationId": "getContract",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "contractId",
+            "description": "Contract ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContractHal"
+                }
+              },
+              "application/json+hal": {
+                "examples": [
+                  {
+                    "_links": {
+                      "self": {
+                        "href": "/api/v1/contracts/94923fbd-9092-4a46-ad65-0d8a2e2f551e"
+                      }
+                    },
+                    "id": "94923fbd-9092-4a46-ad65-0d8a2e2f551e",
+                    "name": "testing for hello contract",
+                    "contractScript": "module.exports = { \"id\": \"94923fbd-9092-4a46-ad65-0d8a2e2f551e\", \"name\": \"testing for hello contract\", \"request\": { \"method\": \"POST\", \"urlPath\": \"/hello/apple\", \"queryParameters\": [{\"name\":\"a\",\"value\":\"b\"}], \"body\": { \"a\": \"b\" }, \"headers\": {  } }, \"response\": { \"status\": 200, \"body\": \"ok\", \"headers\": {} } }"
+                  }
+                ]
+              },
+              "application/vnd.js.contract": {
+                "examples": [
+                  "module.exports = {\n  \"name\": \"testing for hello contract\",\n  \"request\": {\n    \"method\": \"POST\",\n    \"urlPath\": \"/hello/apple\",\n    \"queryParameters\": [{\n      \"name\": \"a\",\n      \"value\": \"b\"\n    }],\n    \"body\": {\n      \"a\": \"b\"\n    },\n    \"headers\": {}\n  },\n  \"response\": {\n    \"status\": 200,\n    \"body\": {\n      \"ok\"\n    },\n    \"headers\": {}\n  }\n}"
+                ]
+              }
+            }
+          },
+          "404": {
+            "description": "App not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "contract"
+        ],
+        "summary": "Update an existing Contract",
+        "description": "",
+        "operationId": "updateContract",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "contractId",
+            "description": "Contract ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Update success"
+          },
+          "404": {
+            "description": "Contract not found"
+          }
+        },
+        "requestBody": {
+          "$ref": "#/components/requestBodies/body"
+        }
+      },
+      "delete": {
+        "tags": [
+          "contract"
+        ],
+        "summary": "Delete an Contract",
+        "description": "",
+        "operationId": "deleteContract",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "contractId",
+            "description": "Contract ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete success"
+          },
+          "404": {
+            "description": "Contract not found"
+          }
+        }
+      }
+    },
+    "/apps/{appId}/wirestubs": {
+      "post": {
+        "tags": [
+          "wirestub"
+        ],
+        "summary": "Wiring an App's' wirestub",
+        "description": "",
+        "operationId": "wireAppWirestub",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appId",
+            "description": "App ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Wirestub success"
+          },
+          "500": {
+            "description": "Wirestub fail"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "description": "An App object that needs to be added",
+              "schema": {
+                "$ref": "#/components/schemas/Wirestub"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "wirestub"
+        ],
+        "summary": "Get the wirestub metadata",
+        "description": "",
+        "operationId": "getAppWirestub",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appId",
+            "description": "App ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Wirestub"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Wirestub not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "wirestub"
+        ],
+        "summary": "Unwire the wirestub",
+        "description": "",
+        "operationId": "unwireAppWirestub",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appId",
+            "description": "App ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Wire wirestub success",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Wirestub"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Unwire wirestub success"
+          },
+          "404": {
+            "description": "Wirestub not found"
+          }
+        }
+      }
+    },
+    "/apps/{appId}/wiretests": {
+      "post": {
+        "tags": [
+          "wiretest"
+        ],
+        "summary": "Testing App's contracts",
+        "description": "",
+        "operationId": "verifyAppContracts",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appId",
+            "description": "App ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Test finished",
+            "example": {
+              "application/json": "{\n  \"app\": {\n    \"id\": \"80a69a44-3f3b-48c1-a7d1-b34b89117e75\",\n    \"name\": \"test\"\n  },\n  \"testInfo\": {\n    \"timeMS\": 76.2579990029335,\n    \"success\": true\n  },\n  \"results\": [\n    {\n      \"versionNo\": \"0.0.1\",\n      \"testInfo\": {\n        \"timeMS\": 75.7432410120964,\n        \"success\": true\n      },\n      \"results\": [\n        {\n          \"testInfo\": {\n            \"timeMS\": 51.209954023361206,\n            \"success\": true,\n            \"errors\": [],\n            \"appId\": \"80a69a44-3f3b-48c1-a7d1-b34b89117e75\",\n            \"version\": \"0.0.1\",\n            \"contract\": {\n              \"id\": \"b9135ab0-20d2-43f3-b947-3bac5b061f61\",\n              \"name\": \"function examples\"\n            }\n          },\n          \"request\": {\n            \"method\": \"POST\",\n            \"urlPath\": \"http://localhost:8001/api/v0.0.1/function_examples\",\n            \"queryParams\": {},\n            \"headers\": {\n              \"authorization\": \"Bearer 0a4b6c5d\",\n              \"Content-type\": \"application/json\"\n            },\n            \"body\": {\n              \"test\": {\n                \"numberString\": \"13579\",\n                \"number\": 24680,\n                \"arrayOfValues\": [\n                  \"apple\",\n                  \"orange\",\n                  \"banana\"\n                ],\n                \"regular expression\": \"acp-113520\",\n                \"name\": \"Cristina Hayes\",\n                \"email\": \"Cristina.Hayes82@yahoo.com\",\n                \"phone\": \"1-454-765-8135\",\n                \"date\": \"2017-05-07\",\n                \"words\": \"reiciendis est minima\",\n                \"uuid4\": \"510552bc-c017-452a-bd51-7b1b3d3a5f13\",\n                \"multipleChoices\": \"class A\",\n                \"notAnyOf\": \"c\"\n              }\n            }\n          },\n          \"expectedResponseScript\": \"{ \\\"status\\\": 200, \\\"body\\\": { \\\"num\\\": integer({\\\"gt\\\":0,\\\"lt\\\":60000}), \\\"reqBodyJsonParams\\\": jsonpath(\\\"$.req.body.test\\\") }, \\\"headers\\\": { \\\"test-header\\\": \\\"dummy\\\", \\\"test-regex-header\\\": regex(\\\"\\\\\\\"/hello/[a-z]{3,5}\\\\\\\"\\\") } }\",\n          \"response\": {\n            \"status\": 200,\n            \"headers\": {\n              \"x-powered-by\": \"Express\",\n              \"test-header\": \"dummy\",\n              \"test-regex-header\": \"\\\"/hello/njm\\\"\",\n              \"content-type\": \"application/json; charset=utf-8\",\n              \"content-length\": \"381\",\n              \"etag\": \"W/\\\"17d-j5SCn3LsQSGqO0vZ5zj/AHLJ8qg\\\"\",\n              \"date\": \"Tue, 07 May 2017 09:11:28 GMT\",\n              \"connection\": \"close\"\n            },\n            \"body\": \"{\\\"num\\\":56789,\\\"reqBodyJsonParams\\\":[{\\\"numberString\\\":\\\"13579\\\",\\\"number\\\":24680,\\\"arrayOfValues\\\":[\\\"apple\\\",\\\"orange\\\",\\\"banana\\\"],\\\"regular expression\\\":\\\"acp-113520\\\",\\\"name\\\":\\\"Cristina Hayes\\\",\\\"email\\\":\\\"Cristina.Hayes82@yahoo.com\\\",\\\"phone\\\":\\\"1-454-765-8135\\\",\\\"date\\\":\\\"2017-05-07\\\",\\\"words\\\":\\\"reiciendis est minima\\\",\\\"uuid4\\\":\\\"510552bc-c017-452a-bd51-7b1b3d3a5f13\\\",\\\"multipleChoices\\\":\\\"class A\\\",\\\"notAnyOf\\\":\\\"c\\\"}]}\"\n          }\n        },\n        {\n          \"testInfo\": {\n            \"timeMS\": 22.899529993534088,\n            \"success\": true,\n            \"errors\": [],\n            \"appId\": \"80a69a44-3f3b-48c1-a7d1-b34b89117e75\",\n            \"version\": \"0.0.1\",\n            \"contract\": {\n              \"id\": \"94923fbd-9092-4a46-ad65-0d8a2e2f551e\",\n              \"name\": \"testing for hello contract\"\n            }\n          },\n          \"request\": {\n            \"method\": \"POST\",\n            \"urlPath\": \"http://localhost:8001/api/v0.0.1/hello/apple\",\n            \"queryParams\": {\n              \"a\": \"b\"\n            },\n            \"headers\": {\n              \"Content-type\": \"application/json\"\n            },\n            \"body\": {\n              \"test\": {\n                \"a\": \"13579\",\n                \"b\": 24680,\n                \"c\": [\n                  \"apple\",\n                  \"orange\",\n                  \"banana\"\n                ]\n              }\n            }\n          },\n          \"expectedResponseScript\": \"{ \\\"status\\\": 200, \\\"body\\\": { \\\"num\\\": integer({\\\"gt\\\":0,\\\"lt\\\":60000}) }, \\\"headers\\\": { \\\"test-header\\\": \\\"dummy\\\", \\\"test-regex-header\\\": regex(\\\"\\\\\\\"/hello/[a-z]{3,5}\\\\\\\"\\\") } }\",\n          \"response\": {\n            \"status\": 200,\n            \"headers\": {\n              \"x-powered-by\": \"Express\",\n              \"test-header\": \"dummy\",\n              \"test-regex-header\": \"\\\"/hello/hsxuj\\\"\",\n              \"content-type\": \"application/json; charset=utf-8\",\n              \"content-length\": \"13\",\n              \"etag\": \"W/\\\"d-X7zzcBORmHVzBfO4n/4UzEkpfkY\\\"\",\n              \"date\": \"Tue, 07 May 2017 09:11:28 GMT\",\n              \"connection\": \"close\"\n            },\n            \"body\": \"{\\\"num\\\":56789}\"\n          }\n        }\n      ]\n    }\n  ]\n}"
+            },
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/WiretestResult"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "description": "An App object that needs to be added",
+              "schema": {
+                "$ref": "#/components/schemas/Wiretest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/importAppsFiles": {
+      "post": {
+        "tags": [
+          "utils"
+        ],
+        "summary": "Import Apps Files",
+        "description": "",
+        "operationId": "importAppsFiles",
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "Import success"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "description": "An App object that needs to be added",
+              "schema": {
+                "type": "object",
+                "required": [
+                  "port",
+                  "appFolder"
+                ],
+                "properties": {
+                  "port": {
+                    "type": "integer"
+                  },
+                  "appFolder": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "port": 8081,
+                  "appFolder": "C:/apps_root_import_folder"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "App": {
+        "type": "object",
+        "required": [
+          "name",
+          "servers",
+          "basePath"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "servers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "basePath": {
+            "type": "string"
+          }
+        }
+      },
+      "AppHal": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "servers",
+          "basePath",
+          "versionNumbers",
+          "_links"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "servers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "basePath": {
+            "type": "string"
+          },
+          "versionNumbers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "_links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "type": "string"
+                  }
+                }
+              },
+              "versions": {
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "AppVersion": {
+        "type": "object",
+        "required": [
+          "v",
+          "path",
+          "contracts"
+        ],
+        "properties": {
+          "v": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "contracts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "AppVersionHal": {
+        "type": "object",
+        "required": [
+          "v",
+          "path",
+          "contracts",
+          "_links"
+        ],
+        "properties": {
+          "v": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "contracts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "_links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "type": "string"
+                  }
+                }
+              },
+              "parent": {
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "type": "string"
+                  }
+                }
+              },
+              "contracts": {
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ContractHal": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "contractScript",
+          "_links"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "contractScript": {
+            "type": "string"
+          },
+          "_links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "Wirestub": {
+        "type": "object",
+        "required": [
+          "port"
+        ],
+        "properties": {
+          "port": {
+            "type": "integer"
+          }
+        },
+        "example": {
+          "port": 8081
+        }
+      },
+      "Wiretest": {
+        "type": "object",
+        "required": [
+          "server"
+        ],
+        "properties": {
+          "server": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "port": "http://localhost:8001"
+        }
+      },
+      "WiretestResult": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "testInfo": {
+            "type": "object",
+            "properties": {
+              "timeMs": {
+                "type": "number",
+                "format": "float"
+              },
+              "success": {
+                "type": "boolean"
+              }
+            }
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "versionNo": {
+                  "type": "string"
+                },
+                "testInfo": {
+                  "type": "object",
+                  "properties": {
+                    "timeMs": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "testInfo": {
+                        "type": "object",
+                        "properties": {
+                          "timeMs": {
+                            "type": "number",
+                            "format": "float"
+                          },
+                          "success": {
+                            "type": "boolean"
+                          },
+                          "errors": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "appId": {
+                            "type": "string"
+                          },
+                          "version": {
+                            "type": "string"
+                          },
+                          "contract": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "request": {
+                        "type": "object",
+                        "properties": {
+                          "method": {
+                            "type": "string"
+                          },
+                          "urlPath": {
+                            "type": "string"
+                          },
+                          "queryParams": {
+                            "type": "object"
+                          },
+                          "headers": {
+                            "type": "object"
+                          },
+                          "body": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "expectedResponseScript": {
+                        "type": "string"
+                      },
+                      "response": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "integer"
+                          },
+                          "headers": {
+                            "type": "object"
+                          },
+                          "body": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+    },
+    "parameters": {
+    },
+    "examples": {
+    },
+    "requestBodies": {
+      "body": {
+        "content": {
+          "application/vnd.js.contract": {
+            "description": "An Contract object as JS script that needs to be added",
+            "schema": {
+              "type": "string",
+              "example": "module.exports = {\n  \"name\": \"testing for hello contract\",\n  \"request\": {\n    \"method\": \"POST\",\n    \"urlPath\": \"/hello/apple\",\n    \"queryParameters\": [{\n      \"name\": \"a\",\n      \"value\": \"b\"\n    }],\n    \"body\": {\n      \"a\": \"b\"\n    },\n    \"headers\": {}\n  },\n  \"response\": {\n    \"status\": 200,\n    \"body\": {\n      \"ok\"\n    },\n    \"headers\": {}\n  }\n}"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+    },
+    "headers": {
+    }
+  }
+}

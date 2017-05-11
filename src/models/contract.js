@@ -40,31 +40,6 @@ class Contract {
         return contractHal;
     }
 
-/*
-    toContractCompatScript() {
-        let contractScript = "module.exports = " + recurrsiveToString(this);
-        return contractScript;
-    }
-    */
-
-/*
-    toContractScript() {
-        let contractScript = "module.exports = " + recurrsiveToString(this);
-        contractScript = beautify(contractScript, { indent_size: 2 })
-        return contractScript;
-    }
-    
-
-    toStubContractScript() {
-        let contractScript = "module.exports = " + recurrsiveToString(this);
-        let stubContract = new Contract(sandboxRunner.runScript(contractScript, {
-            value: stubValue
-        }));
-        let stubContractScript = "module.exports = " + recurrsiveToString(stubContract);
-        stubContractScript = beautify(stubContractScript, { indent_size: 2 })
-        return stubContractScript;
-    }*/
-
     toStubContract() {
         let contractScript = this.rawScript;
         //let contractScript = "module.exports = " + recurrsiveToString(this);

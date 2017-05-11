@@ -1,7 +1,7 @@
 'use strict';
 
 const hal = require('hal');
-const moduleAPIVersion = "1";
+const moduleAPIVersion = require('./../../package.json')['api-version'];
 
 class Version {
     constructor(props = {}) {

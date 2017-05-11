@@ -6,7 +6,7 @@ info:
     For more detail about [Project rest-in-contract](http://blog.airic-yu.com/2062/project-rest-in-contracts), you may have a look in our Project rest-in-contract's Homepage for detail introduction.
         
     This rest-in-contract node module is a module for the Local Contract Server which is the core part of the Rest-in-contract project.
-  version: "0.1.0"
+  version: "1.0"
   title: "rest-in-contract"
   contact:
     email: "airic.yu@gmail.com"
@@ -16,17 +16,17 @@ info:
 externalDocs:
   description: "Find out more in Github page"
   url: "https://github.com/airicyu/rest-in-contract"
-host: "localhost"
+host: "localhost:8000"
 basePath: "/api/v1"
 tags:
 - name: "server"
   description: "Contract Server APIs"
 - name: "app"
-  description: "Access to Petstore orders"
+  description: "Apps"
 - name: "app version"
-  description: "Operations about user"
+  description: "App Versions"
 - name: "contract"
-  description: "Operations about user"
+  description: "API Contracts"
 schemes:
 - "http"
 paths:
@@ -544,7 +544,7 @@ paths:
           description: "Test finished"
           schema:
             $ref: '#/definitions/WiretestResult'
-          examples:
+          example:
             application/json: |-
               {
                 "app": {
