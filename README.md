@@ -22,11 +22,7 @@
 ## Project Status
 
 Currently, the project is in beta version (v0.x.x).
-
-The basic Contract Server module is done to support basic usage of API Contract stubbing & testing.
-But some builtin feature is not done yet. (e.g: Suppoting more middleware functions in the contract script)
-
-Since it is still beta version, we are not finalized the v1.0 in-the-box features yet.
+The basic Contract Server module is done to support basic usage of API Contract stubbing & testing, but we do not finalized the v1.0 in-the-box features yet.
 
 ## Roadmaps
 
