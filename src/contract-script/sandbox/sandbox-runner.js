@@ -6,11 +6,15 @@ const dsl = require('rest-in-contract-dsl');
 const builtinFunctions = dsl.functions;
 
 const runScript = function (script, extensions) {
+
+    let dslFunctions = Object.assign({}, builtinFunctions, extensions);
+    /*Object.freeze(dslFunction);
+
     let mockDsl = {
-        baseTypes: dsl.baseTypes,
-        functions: Object.assign({}, builtinFunctions, extensions),
-        utils: dsl.utils
-    };
+        //baseTypes: dsl.baseTypes,
+        functions: dslFunction,
+        //utils: dsl.utils
+    };*/
     
     let builtinFunctionKeys = [];
     for (let key in builtinFunctions){
@@ -36,7 +40,7 @@ const runScript = function (script, extensions) {
         },
         wrapper: 'commonjs'
     });
-    vm.freeze(mockDsl.functions, 'dslFunctions');
+    vm.freeze(dslFunctions, 'dslFunctions');
 
     try{
         let proxyObject = vm.run(preloadFunctionScript + script);

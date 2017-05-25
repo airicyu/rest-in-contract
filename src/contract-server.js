@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 
+const models = require('./models/models');
 const api = require('./api');
 const appRouter = require('./controllers/app-router');
 const contractRouter = require('./controllers/contract-router');
@@ -94,5 +95,6 @@ var initRestServer = function(options){
 
 module.exports = {
     initRestServer,
-    api
+    api,
+    models
 };

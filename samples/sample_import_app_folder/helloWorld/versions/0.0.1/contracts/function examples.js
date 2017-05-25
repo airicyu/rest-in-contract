@@ -1,3 +1,9 @@
+
+/*var sum = function(a,b){
+    console.log(JSON.stringify(arguments))
+    return a+b;
+}*/
+
 module.exports = 
 {
 	"id": "b9135ab0-20d2-43f3-b947-3bac5b061f61",
@@ -33,7 +39,11 @@ module.exports =
         },
         "body": {
             "num" : value({stub: 56789, test: integer({gt:0, lt:60000})}),
-			"reqBodyJsonParams" : jsonpath("$.req.body.test")
+			"reqBodyJsonParams" : jsonpath("$.req.body.test"),
+            "test1" : sum(1, jsonpath("$.req.body.test.number")),
+			"evalContext": evalContext(function(context){
+				return context.req.body.test.number + 2;
+			})
         }
     }
 }

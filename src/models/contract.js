@@ -5,7 +5,7 @@ const dsl = require('rest-in-contract-dsl');
 
 const { recurrsiveToString } = dsl.utils;
 const { Middleware } = dsl.baseTypes;
-const { recurrsiveEvaluate, recurrsiveCompare, recurrsiveMock, stubValue, testValue } = dsl.functions;
+const { recurrsiveEvaluate, recurrsiveCompare, recurrsiveMock, value, stubValue, testValue } = dsl.functions;
 const sandboxRunner = require('./../contract-script/sandbox/sandbox-runner');
 const beautify = require('js-beautify').js_beautify;
 var hal = require('hal');
@@ -40,6 +40,7 @@ class Contract {
         return contractHal;
     }
 
+    /*
     toStubContract() {
         let contractScript = this.rawScript;
         //let contractScript = "module.exports = " + recurrsiveToString(this);
@@ -47,7 +48,7 @@ class Contract {
             value: stubValue
         }));
         return stubContract;
-    }
+    }*/
 /*
     toTestingContractScript() {
         let contractScript = "module.exports = " + recurrsiveToString(this);
@@ -59,12 +60,43 @@ class Contract {
         return testContractScript;
     }*/
 
+    
     toTestingContract() {
         //let contractScript = "module.exports = " + recurrsiveToString(this);
         let contractScript = this.rawScript;
-        let testContract = new Contract(sandboxRunner.runScript(contractScript, {
-            value: testValue
-        }));
+        let scriptOutputObject = sandboxRunner.runScript(contractScript);
+        
+        let recurrsiveValueToTestValue = function (obj){
+            let returnObj = {};
+
+            let currObject = obj;
+            if (typeof currObject === 'object') {
+                if (Array.isArray(currObject)){
+                    returnObj = [];
+                } else {
+                    returnObj = {};
+                }
+
+                if (Middleware.isMiddleware(currObject)) {
+                    if (obj.type === 'ConsumerProducerValue'){
+                        returnObj = obj.evaluateTestValue();
+                    } else {
+                        returnObj = currObject;
+                    }
+                } else {
+                    for (let key in currObject) {
+                        returnObj[key] = recurrsiveValueToTestValue(currObject[key]);
+                    }
+                }
+            } else {
+                returnObj = currObject;
+            }
+        }
+
+        scriptOutputObject = recurrsiveValueToTestValue(scriptOutputObject);
+        scriptOutputObject.rawScript = contractScript;
+        let testContract = new Contract(scriptOutputObject);
+
         return testContract;
     }
 
@@ -79,7 +111,8 @@ class Contract {
                 query: req.query,
                 body: req.body,
                 headers: req.headers
-            }
+            },
+            isStub: true
         }
 
         if (self.request.method) {

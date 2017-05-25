@@ -127,20 +127,21 @@ async function testContract(app, version, contract, wiretest) {
 
     let basePath = getServerPath(app, version, wiretest);
 
-    let testContract = contract.toTestingContract();
+    //let testContract = contract.toTestingContract();
+    let testContract = contract;
 
     let urlPath = testContract.request.urlPath;
-    urlPath = recurrsiveEvaluate(urlPath).evaluate();
+    urlPath = recurrsiveEvaluate(urlPath).evaluate({ isTest: true });
     urlPath = recurrsiveMock(urlPath).mock();
 
     let queryParamMap = {};
     for (let queryParam of testContract.request.queryParameters) {
         let paramName = queryParam.name;
-        paramName = recurrsiveEvaluate(paramName).evaluate();
+        paramName = recurrsiveEvaluate(paramName).evaluate({ isTest: true });
         paramName = recurrsiveMock(paramName).mock();
 
         let paramValue = queryParam.value;
-        paramValue = recurrsiveEvaluate(paramValue).evaluate();
+        paramValue = recurrsiveEvaluate(paramValue).evaluate({ isTest: true });
         paramValue = recurrsiveMock(paramValue).mock();
 
         queryParamMap[paramName] = paramValue;
@@ -149,14 +150,14 @@ async function testContract(app, version, contract, wiretest) {
     let reqHeaders = {};
     for (let headerKey in testContract.request.headers) {
         let headerValue = testContract.request.headers[headerKey];
-        headerValue = recurrsiveEvaluate(headerValue).evaluate();
+        headerValue = recurrsiveEvaluate(headerValue).evaluate({ isTest: true });
         headerValue = recurrsiveMock(headerValue).mock();
         reqHeaders[headerKey] = headerValue;
     }
 
     let reqBody = testContract.request.body;
     if (reqBody) {
-        reqBody = recurrsiveEvaluate(reqBody).evaluate();
+        reqBody = recurrsiveEvaluate(reqBody).evaluate({ isTest: true });
         reqBody = recurrsiveMock(reqBody).mock();
     }
 
