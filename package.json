@@ -1,6 +1,6 @@
 {
   "name": "rest-in-contract",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Rest API Contract. This module is the Contract Server nodejs module for `rest-in-contract` project.",
   "repository": {
     "type": "git",
