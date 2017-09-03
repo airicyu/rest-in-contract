@@ -43,3 +43,4 @@ node_modules
 coverage
 test/TESTS-xunit.xml
 .history
+.nyc_output

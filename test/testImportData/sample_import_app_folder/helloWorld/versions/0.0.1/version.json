@@ -1,0 +1,5 @@
+{
+	"v": "0.0.1",
+	"path": "{{app.basePath}}/v{{version.v}}",
+	"contracts": []
+}

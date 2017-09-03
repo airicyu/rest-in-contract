@@ -8,10 +8,11 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "nyc mocha",
+    "coverage": "nyc report --reporter=text-lcov > coverage/icov.info && codecov --file=./coverage/lcov.info"
   },
   "engines": {
-    "node": "7"
+    "node": ">=7.10.0 || 8"
   },
   "keywords": [
     "REST",
@@ -24,23 +25,53 @@
   "email": "airic.yu@gmail.com",
   "license": "Apache-2.0",
   "dependencies": {
-    "body-parser": "^1.17.1",
-    "chai": "^3.5.0",
-    "express": "^4.15.2",
-    "faker": "^4.1.0",
-    "fs-extra": "^3.0.0",
-    "hal": "^0.1.0",
-    "http-shutdown": "^1.2.0",
-    "js-beautify": "^1.6.12",
-    "jsonpath": "^0.2.11",
-    "moment": "^2.18.1",
-    "randexp": "^0.4.5",
-    "request": "^2.81.0",
-    "rest-in-contract-dsl": "^0.1.0",
-    "stateful-result": "^1.0.0",
-    "tcp-port-used": "^0.1.2",
-    "uuid": "^3.0.1",
-    "vm2": "^3.4.6"
+    "body-parser": "~1.17.2",
+    "chai": "~4.1.2",
+    "express": "~4.15.4",
+    "faker": "~4.1.0",
+    "fs-extra": "~4.0.1",
+    "hal": "~1.1.0",
+    "http-shutdown": "~1.2.0",
+    "js-beautify": "~1.6.14",
+    "jsonpath": "~0.2.12",
+    "moment": "~2.18.1",
+    "randexp": "~0.4.6",
+    "request": "~2.81.0",
+    "rest-in-contract-dsl": "~0.2.0",
+    "stateful-result": "~1.0.0",
+    "tcp-port-used": "~0.1.2",
+    "uuid": "~3.1.0",
+    "vm2": "~3.5.0"
   },
-  "api-version": "1"
+  "devDependencies": {
+    "chai": "~4.1.2",
+    "mocha": "~3.5.0",
+    "nyc": "^11.1.0",
+    "request-promise-native": "^1.0.4",
+    "supertest": "~3.0.0"
+  },
+  "api-version": "1",
+  "nyc": {
+    "check-coverage": true,
+    "per-file": true,
+    "lines": 0,
+    "statements": 0,
+    "functions": 0,
+    "branches": 0,
+    "include": [
+      "src/**.js"
+    ],
+    "exclude": [
+      "src/public/**"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "require": [],
+    "extension": [],
+    "cache": true,
+    "all": true,
+    "report-dir": "./coverage"
+  }
 }

@@ -37,7 +37,11 @@ const versionServices = {
 
     get: async(appId, v) => {
         let [error, app] = (await appsStore().get(appId)).getOrThrow();
-        if (v) {
+        if (!appId){
+            return Result.newFail({
+                code: 404
+            });
+        } else if (v) {
             let version = app.versions.find((version) => version.v === v);
             if (version) {
                 return Result.newSuccess({

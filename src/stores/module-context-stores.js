@@ -2,8 +2,8 @@
 
 const { Result } = require('stateful-result').models;
 
-const wirestubStore = new Map();
-const stubServerStore = new Map();
+var wirestubStore = new Map();
+var stubServerStore = new Map();
 
 var moduleContextStore = {
     stores: {
@@ -47,6 +47,10 @@ var moduleContextStore = {
                 } else {
                     return Result.newFail({ code: 404 });
                 }
+            },
+            reset: async() => {
+                wirestubStore = new Map();
+                return Result.newSuccess({ code: 204 })
             }
         },
         stubServers: {
@@ -70,6 +74,10 @@ var moduleContextStore = {
                 } else {
                     return Result.newFail({ code: 404 });
                 }
+            },
+            reset: async() => {
+                stubServerStore = new Map();
+                return Result.newSuccess({ code: 204 })
             }
         }
     }

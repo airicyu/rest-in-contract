@@ -30,10 +30,16 @@ router.post('/', async(req, res) => {
 });
 
 router.put('/:appId', async(req, res) => {
-    let appId = req.params.appId;
-    let app = App.newFromAttributes(req.body);
+    var appId = req.params.appId;
+    var app = App.newFromAttributes(req.body);
     app.id = appId;
-    let [error, data, code, result] = (await appServices.update(app)).get();
+
+    var [error, originalApp] = (await appServices.get(appId)).get();
+    if (originalApp){
+        app.versions = originalApp.versions;
+    }
+
+    var [error, data, code, result] = (await appServices.update(app)).get();
     if (!error) {
         res.status(204).send('No content');
     } else {

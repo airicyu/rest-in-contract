@@ -32,9 +32,15 @@ router.post('/', async(req, res) => {
 });
 
 router.put('/:versionNo', async(req, res) => {
-    let version = Version.newFromAttributes(req.body);
-    let error, appId, data, code, result
+    var versionNo = req.params.versionNo
+    var version = Version.newFromAttributes(req.body);
+    var error, appId, data, code, result
     appId = req.params.appId;
+
+    var [error, originalVersion] = (await versionServices.get(appId, versionNo)).get();
+    if (originalVersion){
+        version.contracts = originalVersion.contracts;
+    }
 
     [error, data, code] = (await versionServices.update(appId, version)).get();
     if (!error) {

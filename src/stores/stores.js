@@ -20,6 +20,14 @@ class Store {
             this.setStore(key, stores[key]);
         }
     }
+
+    async reset(){
+        for (let [key,store] of this.storesMap.entries()) {
+            if (store && store.reset){
+                await store.reset();
+            }
+        }
+    }
 }
 
 const stores = new Store();

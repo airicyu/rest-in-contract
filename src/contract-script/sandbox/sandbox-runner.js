@@ -16,6 +16,7 @@ const runScript = function (script, extensions) {
         //utils: dsl.utils
     };*/
     
+    /*
     let builtinFunctionKeys = [];
     for (let key in builtinFunctions){
         builtinFunctionKeys.push(key);
@@ -27,6 +28,7 @@ const runScript = function (script, extensions) {
     }
     let preloadFunctionScript = `'use strict'\n`;
     preloadFunctionScript += `var { ${builtinFunctionKeys.join(', ')} } = dslFunctions;\n`;
+    */
     
     let vm = new NodeVM({
         console: 'inherit',
@@ -36,14 +38,16 @@ const runScript = function (script, extensions) {
             builtin: [],
             root: "./",
             mock: {
+                "rest-in-contract-dsl" : dsl
             }
         },
         wrapper: 'commonjs'
     });
-    vm.freeze(dslFunctions, 'dslFunctions');
+    //vm.freeze(dslFunctions, 'dslFunctions');
 
     try{
-        let proxyObject = vm.run(preloadFunctionScript + script);
+        //let proxyObject = vm.run(preloadFunctionScript + script);
+        let proxyObject = vm.run(script);
         return proxyObject;
     } catch (e){
         console.error('sandbox-runner runtime error', e, e.stack);

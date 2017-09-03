@@ -1,0 +1,6 @@
+{
+	"id": "80a69a44-3f3b-48c1-a7d1-b34b89117e75",
+    "name": "test",
+    "servers":["http://example.com:8001"],
+	"basePath": "/api"
+}

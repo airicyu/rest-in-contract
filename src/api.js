@@ -39,7 +39,7 @@ const api = {
                 return versionServices.get(appId, versionId);
             },
             update: async(appId, version) => {
-                return versionServices.update(app, version);
+                return versionServices.update(appId, version);
             },
             delete: async(appId, versionId) => {
                 return versionServices.delete(appId, versionId);

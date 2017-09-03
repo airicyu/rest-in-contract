@@ -1,9 +1,8 @@
 language: node_js
 node_js:
-  - "7"
-before_script:
-  - npm install -g gulp
-install:
-  - npm install
-script:
-  - npm test
+  - "7.10.0"
+  - "8"
+install: npm install
+before_script: npm install -g mocha
+script: mocha
+after_success: npm run coverage

@@ -8,10 +8,12 @@ const models = require('./models/models');
 const api = require('./api');
 const appRouter = require('./controllers/app-router');
 const contractRouter = require('./controllers/contract-router');
+const httpShutdown = require('http-shutdown');
+const stores = require('./stores/stores');
 
 const moduleAPIVersion = require('./../package.json')['api-version'];
 
-var initRestServer = function(options){
+var initServer = function(options){
     var port = options.port || 8000;
     var app = options.app || express();
 
@@ -86,15 +88,34 @@ var initRestServer = function(options){
         res.send(apiSpec);
     });
 
+    app.get('/api/v', function(req, res){
+        res.send(moduleAPIVersion);
+    });
+
+    app.get('/api', function(req, res){
+        res.send('OK');
+    });
+
     app.use(express.static(path.join(__dirname, 'public')));
 
-    console.log(`Contract Server started on port ${port}`);
-    app.listen(port);
-    return app;
+    //console.log(`Contract Server started on port ${port}`);
+    let serverInstance = app.listen(port);
+    serverInstance = httpShutdown(serverInstance);
+    return serverInstance;
+}
+
+var shutdownServer = async function(serverInstance){
+    return new Promise((resolve, reject) => {
+        serverInstance.forceShutdown(async() => {
+            resolve();
+        });
+    });
 }
 
 module.exports = {
-    initRestServer,
+    initServer,
+    shutdownServer,
     api,
-    models
+    models,
+    stores
 };

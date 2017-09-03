@@ -1,8 +1,0 @@
-engines:
-  ESLint:
-    enabled: true
-ratings:
-  paths:
-  - src/**.js
-exclude_paths:
-- "test/"

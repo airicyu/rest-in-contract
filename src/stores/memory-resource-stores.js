@@ -1,8 +1,8 @@
 'use strict';
 const { Result } = require('stateful-result').models;
 
-const appsStore = new Map();
-const contractsStore = new Map();
+var appsStore = new Map();
+var contractsStore = new Map();
 
 var memoryResourceStore = {
     stores: {
@@ -46,6 +46,10 @@ var memoryResourceStore = {
                 } else {
                     return Result.newFail({ code: 404 });
                 }
+            },
+            reset: async() => {
+                appsStore = new Map();
+                return Result.newSuccess({ code: 204 })
             }
         },
         contracts: {
@@ -88,6 +92,10 @@ var memoryResourceStore = {
                 } else {
                     return Result.newFail({ code: 404 });
                 }
+            },
+            reset: async() => {
+                contractsStore = new Map();
+                return Result.newSuccess({ code: 204 })
             }
         }
     }
