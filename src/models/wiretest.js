@@ -2,7 +2,7 @@
 
 class Wiretest {
     constructor(props = {}) {
-        this.server = props.server;
+        this.server = props.server || null;
     }
 }
 

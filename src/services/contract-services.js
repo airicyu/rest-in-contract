@@ -12,22 +12,23 @@ function contractsStore() {
 }
 
 const contractServices = {
-    create: async(contract) => {
+    create: async (contract) => {
         contract.id = contract.id || uuidV4();
         return await contractsStore().create(contract);
     },
 
-    get: async(contractId) => {
+    get: async (contractId) => {
         return await contractsStore().get(contractId);
     },
 
-    update: async(contract) => {
+    update: async (contract) => {
         return await contractsStore().update(contract);
     },
 
-    delete: async(contract) => {
+    delete: async (contract) => {
         return await contractsStore().delete(contract);
     }
+
 }
 
 module.exports = contractServices;

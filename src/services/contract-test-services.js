@@ -1,5 +1,5 @@
 'use strict';
-
+const { Result } = require('stateful-result').models;
 const { wirestub } = require('./../models/models');
 
 const { Timer } = require('./../utils/timer-utils');
@@ -22,7 +22,7 @@ async function appWiretest(appId, wiretest) {
     [error, app] = (await appServices.get(appId)).getOrThrow();
 
     let records = await testApp(app, wiretest);
-    return records;
+    return Result.newSuccess({ code: 200, data: records });
 }
 
 async function appVersionWiretest(appId, versionId, wiretest) {
@@ -31,7 +31,7 @@ async function appVersionWiretest(appId, versionId, wiretest) {
     [error, version] = (await versionServices.get(appId, versionId)).getOrThrow();
 
     let records = await testAppVersion(app, version, wiretest);
-    return records;
+    return Result.newSuccess({ code: 200, data: records });
 }
 
 async function appVersionContractWiretest(appId, versionId, contractId, wiretest) {
@@ -41,7 +41,7 @@ async function appVersionContractWiretest(appId, versionId, contractId, wiretest
     [error, contract] = (await contractServices.get(contractId)).getOrThrow();
 
     let records = await testContract(app, version, contract, wiretest);
-    return records;
+    return Result.newSuccess({ code: 200, data: records });
 }
 
 
@@ -127,7 +127,6 @@ async function testContract(app, version, contract, wiretest) {
 
     let basePath = getServerPath(app, version, wiretest);
 
-    //let testContract = contract.toTestingContract();
     let testContract = contract;
 
     let urlPath = testContract.request.urlPath;
@@ -162,52 +161,101 @@ async function testContract(app, version, contract, wiretest) {
     }
 
     /* for recording request context */
-    let requestContext = {
-        method: testContract.request.method,
-        urlPath: basePath + urlPath,
-        queryParams: queryParamMap,
-        headers: reqHeaders,
-        body: reqBody
+    let testMethods = testContract.request.method;
+    if (!Array.isArray(testMethods)){
+        testMethods = [testMethods];
+    }
+
+    let requestResults = [];
+    for(let testMethod of testMethods){
+        let requestContext = {
+            method: testMethod,
+            urlPath: basePath + urlPath,
+            queryParams: queryParamMap,
+            headers: reqHeaders,
+            body: reqBody
+        };
+
+        /* for evaluating values */
+        let evaluateContext = {
+            req: {
+                method: requestContext.method,
+                path: requestContext.urlPath,
+                query: querystring.stringify(queryParamMap),
+                body: requestContext.body,
+                rawBody: '',
+                jsonBody: {},
+                headers: requestContext.headers
+            }
+        };
+        if (typeof evaluateContext.req.body === 'string'){
+            evaluateContext.req.rawBody = evaluateContext.req.body;
+        } else {
+            evaluateContext.req.rawBody = JSON.stringify(evaluateContext.req.body);
+        }
+
+        if (typeof evaluateContext.req.body === 'string'){
+            try{
+                evaluateContext.req.jsonBody = JSON.parse(evaluateContext.req.body);
+            } catch(e){}
+        } else {
+            evaluateContext.req.jsonBody = evaluateContext.req.body;
+        }
+
+        let requestResult = await testContractRequest(testContract, requestContext, evaluateContext);
+        requestResults.push(requestResult);
+    }
+    
+    let record = {
+        testInfo: {
+            timeMS: 0,
+            success: false,
+            errors: [],
+            appId: app.id,
+            version: version.v,
+            contract: {
+                id: contract.id,
+                name: contract.name
+            },
+            expectedResponseScript: recurrsiveToString(testContract.response),
+        },
+        requestResults: []
     };
 
+    record.testInfo.timeMS = timer.stopAndGetDuration();
+    record.testInfo.success = !requestResults.map(r=>r.testInfo.success).includes(false);
+    record.requestResults = requestResults;
+    return record;
+}
 
+async function testContractRequest(testContract, requestContext, evaluateContext) {
+
+    let timer = new Timer();
 
     /* options for sending request */
     let requestOptions = {
         method: requestContext.method,
         uri: requestContext.urlPath,
         headers: requestContext.headers,
-        qs: requestContext.queryParams
+        qs: requestContext.queryParams,
+        resolveWithFullResponse: true
     };
 
-    if (requestContext.headers['Content-type'] === 'application/x-www-form-urlencoded' ||
-        requestContext.headers['content-type'] === 'application/x-www-form-urlencoded') {
+    if (requestContext.headers['Content-type'] === 'application/x-www-form-urlencoded') {
         requestOptions['form'] = requestContext.body;
-    } else if (requestContext.headers['Content-type'] && requestContext.headers['Content-type'].match(/^.*\/json.*?$/)) {
+    } else if (requestContext.headers['Content-type'] && requestContext.headers['Content-type'].match(/^.*?\/json.*?$/)) {
         if (typeof requestContext.body === 'object') {
             requestOptions['body'] = JSON.stringify(requestContext.body);
         }
     } else if (requestContext.body && typeof requestContext.body === 'object') {
         if (!requestContext.headers['Content-type']) {
             requestContext.headers['Content-type'] = 'application/json';
-            requestOptions.headers['Content-type'] === 'application/json';
         }
         requestOptions['body'] = JSON.stringify(requestContext.body);
-        //requestOptions['json'] = true;
     } else if (requestContext.body && typeof requestContext.body === 'string') {
         requestOptions['body'] = requestContext.body;
     }
-
-    /* for evaluating values */
-    let evaluateContext = {
-        req: {
-            method: requestContext.method,
-            path: requestContext.urlPath,
-            query: querystring.stringify(queryParamMap),
-            body: requestContext.body,
-            headers: requestContext.headers
-        }
-    };
+    requestOptions['json'] = false;
 
     let expectResponseContext = {
         status: testContract.response.status,
@@ -239,15 +287,9 @@ async function testContract(app, version, contract, wiretest) {
             timeMS: 0,
             success: false,
             errors: [],
-            appId: app.id,
-            version: version.v,
-            contract: {
-                id: contract.id,
-                name: contract.name
-            }
+            requestMethod: requestContext.method
         },
         request: requestContext,
-        expectedResponseScript: recurrsiveToString(testContract.response),
         response: {
             status: testResponse && testResponse.statusCode,
             headers: testResponse && testResponse.headers,

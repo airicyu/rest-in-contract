@@ -3,9 +3,7 @@
 class Timer {
     constructor() {
         this.status = 'started';
-        this.startTick = process.hrtime();
-        this.startTickMs = this.startTick[0] * 1e3 + this.startTick[1] / 1e6;
-        this.stopTickMs = undefined;
+        this.start();
     }
 
     start() {
@@ -26,12 +24,12 @@ class Timer {
         if (this.status === 'started') {
             this.stop();
         }
-        return this.stopTickMs - this.startTickMs;
+        return this.getDuration();
     }
 
     getDuration() {
         if (this.status === 'stoped') {
-            return this.stopTimeMs - this.startTimeMs;
+            return this.stopTickMs - this.startTickMs;
         } else {
             let nowTick = process.hrtime();
             this.nowTickMs = nowTick[0] * 1e3 + nowTick[1] / 1e6;

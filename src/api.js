@@ -1,4 +1,4 @@
-const { appServices, versionServices, contractServices, wirestubServices, contractTestServices } = require('./services/services');
+const { appServices, versionServices, contractServices, wirestubServices, wiretestServices } = require('./services/services');
 const importHelper = require('./helpers/import-helper');
 
 const api = {
@@ -26,9 +26,9 @@ const api = {
                 return wirestubServices.delete(appId);
             },
         },
-        contractTest: {
+        wiretest: {
             post: async(appId, wiretest) => {
-                return contractTestServices.appWiretest(appId, wiretest);
+                return wiretestServices.appWiretest(appId, wiretest);
             }
         },
         version: {

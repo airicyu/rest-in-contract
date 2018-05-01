@@ -8,27 +8,6 @@ const builtinFunctions = dsl.functions;
 const runScript = function (script, extensions) {
 
     let dslFunctions = Object.assign({}, builtinFunctions, extensions);
-    /*Object.freeze(dslFunction);
-
-    let mockDsl = {
-        //baseTypes: dsl.baseTypes,
-        functions: dslFunction,
-        //utils: dsl.utils
-    };*/
-    
-    /*
-    let builtinFunctionKeys = [];
-    for (let key in builtinFunctions){
-        builtinFunctionKeys.push(key);
-    }
-    for (let key in extensions){
-        if (!builtinFunctionKeys.includes(key)){
-            builtinFunctionKeys.push(key);
-        }
-    }
-    let preloadFunctionScript = `'use strict'\n`;
-    preloadFunctionScript += `var { ${builtinFunctionKeys.join(', ')} } = dslFunctions;\n`;
-    */
     
     let vm = new NodeVM({
         console: 'inherit',

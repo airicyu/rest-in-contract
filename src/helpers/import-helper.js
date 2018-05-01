@@ -87,21 +87,25 @@ const importAppsFiles = async function (appsRootDir) {
         let app = appsMapping[appFilePath];
         let error, appId;
         [error, appId] = (await appServices.create(app)).get();
-        appIdMapping[appFilePath] = appId;
+        if (!error){
+            appIdMapping[appFilePath] = appId;
+        }
     }
 
     for (let appFilePath in appToVersionMapping) {
         let appId = appIdMapping[appFilePath];
 
-        let versionFilePaths = appToVersionMapping[appFilePath];
+        if (appId){
+            let versionFilePaths = appToVersionMapping[appFilePath];
 
-        for (let versionFilePath of versionFilePaths) {
-            let version = versionsMapping[versionFilePath];
-            let contractIds = versionToContractMapping[versionFilePath].map(contractFilPath => contractIdMapping[contractFilPath]);
-            version.contracts = contractIds;
+            for (let versionFilePath of versionFilePaths) {
+                let version = versionsMapping[versionFilePath];
+                let contractIds = versionToContractMapping[versionFilePath].map(contractFilPath => contractIdMapping[contractFilPath]);
+                version.contracts = contractIds;
 
-            let error;
-            [error] = (await versionServices.create(appId, version)).get();
+                let error;
+                [error] = (await versionServices.create(appId, version)).get();
+            }
         }
     }
 

@@ -2,7 +2,7 @@
 
 class Wirestub {
     constructor(props = {}) {
-        this.port = props.port;
+        this.port = props.port || null;
     }
 }
 

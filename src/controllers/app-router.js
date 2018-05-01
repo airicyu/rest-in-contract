@@ -2,7 +2,7 @@
 
 var express = require('express');
 var { App, Wiretest } = require('./../models/models');
-var { appServices, wiretestService } = require('./../services/services');
+var { appServices, wiretestServices } = require('./../services/services');
 
 var router = express.Router({ mergeParams: true });
 var versionRouter = require('./version-router');
@@ -82,9 +82,13 @@ router.get('/:appId', async(req, res) => {
 router.post('/:appId/wiretests', async(req, res) => {
     let wiretest = new Wiretest(req.body);
     let appId = req.params.appId;
-    let records = await wiretestService.appWiretest(appId, wiretest);
+    let [error, records, code] = (await wiretestServices.appWiretest(appId, wiretest)).get();
 
-    res.send(records);
+    if (!error){
+        res.send(records);
+    } else {
+        res.error(error);
+    }
 });
 
 router.use('/:appId/versions', versionRouter);

@@ -36,8 +36,8 @@ module.exports =
         },
         "body": {
             "num" : value({stub: 56789, test: integer({gt:0, lt:60000})}),
-			"reqBodyJsonParams" : jsonpath("$.req.body.test"),
-            "test1" : sum(1, jsonpath("$.req.body.test.number")),
+			"reqBodyJsonParams" : jsonpath("$.req.jsonBody.test"),
+            "test1" : sum(1, jsonpath("$.req.jsonBody.test.number")),
 			"evalContext": evalContext(function(context){
 				return context.req.body.test.number + 2;
 			})

@@ -5,5 +5,5 @@ Object.assign(module.exports, {
     versionServices: require('./version-services'),
     contractServices: require('./contract-services'),
     wirestubServices: require('./wirestub-services'),
-    wiretestService: require('./wiretest-services')
+    wiretestServices: require('./contract-test-services')
 });

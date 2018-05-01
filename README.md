@@ -78,7 +78,7 @@ contractServer.initRestServer({
 
 Request:
 
-```http
+```
 POST http://localhost:8000/api/v1/importAppsFiles
 Content-type: application/json
 
@@ -90,7 +90,7 @@ Content-type: application/json
 
 Response:
 
-```http
+```
 HTTP/1.1 201 Created
 X-Powered-By: Express
 Content-Type: text/html; charset=utf-8
@@ -117,7 +117,7 @@ importAppsFiles done
 
 Request:
 
-```http
+```
 POST http://localhost:8000/api/v1/apps
 Content-type: application/json
 
@@ -130,7 +130,7 @@ Content-type: application/json
 
 Response:
 
-```http
+```
 HTTP/1.1 201 Created
 X-Powered-By: Express
 location: /api/v1/apps/0fe5fd4e-55db-4a54-9dd5-29bec05f7793
@@ -150,13 +150,13 @@ App created
 
 Request:
 
-```http
+```
 GET http://localhost:8000/api/v1/apps
 ```
 
 Response:
 
-```http
+```
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
@@ -177,13 +177,13 @@ Connection: keep-alive
 
 Request:
 
-```http
+```
 GET http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75
 ```
 
 Response:
 
-```http
+```
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
@@ -224,7 +224,7 @@ Connection: keep-alive
 
 Request:
 
-```http
+```
 PUT http://localhost:8000/api/v1/apps
 Content-type: application/json
 
@@ -237,7 +237,7 @@ Content-type: application/json
 
 Response:
 
-```http
+```
 HTTP/1.1 204 No Content
 X-Powered-By: Express
 ETag: W/"a-fKaPqGKTASLjiIDuRL5tqgGTwrc"
@@ -251,13 +251,13 @@ Connection: keep-alive
 
 Request:
 
-```http
+```
 DELETE http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75
 ```
 
 Response:
 
-```http
+```
 HTTP/1.1 204 No Content
 X-Powered-By: Express
 ETag: W/"a-fKaPqGKTASLjiIDuRL5tqgGTwrc"
@@ -280,7 +280,7 @@ Connection: keep-alive
 
 Request:
 
-```http
+```
 POST http://localhost:8000/api/v1/apps/{{appId}}/versions
 Content-type: application/json
 
@@ -293,7 +293,7 @@ Content-type: application/json
 
 Response:
 
-```http
+```
 HTTP/1.1 201 Created
 X-Powered-By: Express
 location: /api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/versions/0.0.1
@@ -313,13 +313,13 @@ Version created
 
 Request:
 
-```http
+```
 GET http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/versions
 ```
 
 Response:
 
-```http
+```
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
@@ -340,13 +340,13 @@ Connection: keep-alive
 
 Request:
 
-```http
+```
 GET http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/versions/{{versionNo}}
 ```
 
 Response:
 
-```http
+```
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
@@ -386,7 +386,7 @@ Connection: keep-alive
 
 Request:
 
-```http
+```
 Put http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/versions/0.0.1
 Content-type: application/json
 
@@ -401,7 +401,7 @@ Content-type: application/json
 
 Response:
 
-```http
+```
 HTTP/1.1 204 No Content
 X-Powered-By: Express
 ETag: W/"a-fKaPqGKTASLjiIDuRL5tqgGTwrc"
@@ -415,13 +415,13 @@ Connection: keep-alive
 
 Request:
 
-```http
+```
 DELETE http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/versions/0.0.1
 ```
 
 Response:
 
-```http
+```
 HTTP/1.1 204 No Content
 X-Powered-By: Express
 ETag: W/"a-fKaPqGKTASLjiIDuRL5tqgGTwrc"
@@ -440,9 +440,12 @@ Connection: keep-alive
 
 Request:
 
-```http
+```
 POST http://localhost:8000/api/v1/contracts
 Content-type: application/vnd.js.contract
+
+var dsl = require('rest-in-contract-dsl');
+var { value, stub, test, regex, integer } = dsl.functions;
 
 module.exports =
 {
@@ -478,7 +481,7 @@ module.exports =
 
 Response:
 
-```http
+```
 HTTP/1.1 201 Created
 X-Powered-By: Express
 location: /api/v1/contracts/570c74ee-5387-4909-b2a3-a95422aaee33
@@ -498,13 +501,13 @@ Contract created
 
 Request:
 
-```http
+```
 GET http://localhost:8000/api/v1/contracts
 ```
 
 Response:
 
-```http
+```
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
@@ -527,14 +530,14 @@ For produce type `application/vnd.js.contract`,
 
 Request:
 
-```http
+```
 GET http://localhost:8000/api/v1/apps/94923fbd-9092-4a46-ad65-0d8a2e2f551e
 Accept: application/vnd.js.contract
 ```
 
 Response:
 
-```http
+```
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Content-Type: application/vnd.js.contract; charset=utf-8
@@ -542,6 +545,9 @@ Content-Length: 950
 ETag: W/"3b6-dpq2nJH45MeXLrr9vhhtVubL4fY"
 Date: Wed, 03 May 2017 16:56:50 GMT
 Connection: keep-alive
+
+var dsl = require('rest-in-contract-dsl');
+var { value, stub, test, regex, integer } = dsl.functions;
 
 module.exports = {
   "id": "94923fbd-9092-4a46-ad65-0d8a2e2f551e",
@@ -597,14 +603,14 @@ For produce type `application/json`,
 
 Request:
 
-```http
+```
 GET http://localhost:8000/api/v1/apps/94923fbd-9092-4a46-ad65-0d8a2e2f551e
 Accept: application/json
 ```
 
 Response:
 
-```http
+```
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
@@ -621,7 +627,7 @@ Connection: keep-alive
   },
   "id": "94923fbd-9092-4a46-ad65-0d8a2e2f551e",
   "name": "testing for hello contract",
-  "contractsScript": "module.exports = { \"id\": \"94923fbd-9092-4a46-ad65-0d8a2e2f551e\", \"name\": \"testing for hello contract\", \"request\": { \"method\": \"POST\", \"urlPath\": value({stub: regex(\"/hello/[a-z]*\"), test: \"/hello/apple\" }), \"queryParameters\": [{\"name\":\"a\",\"value\":\"b\"}], \"body\": { \"test\": { \"a\": value({stub: regex(\"[0-9]*\"), test: \"13579\" }), \"b\": value({stub: integer({\"gt\":0,\"lt\":60000}), test: 24680 }), \"c\": [\"apple\",\"orange\",\"banana\"] } }, \"headers\": {  } }, \"response\": { \"status\": 200, \"body\": { \"num\": value({stub: 56789, test: integer({\"gt\":0,\"lt\":60000}) }) }, \"headers\": { \"test-header\": \"dummy\", \"test-regex-header\": regex(\"\\\"/hello/[a-z]{3,5}\\\"\") } } }"
+  "contractScript": "var dsl = require('rest-in-contract-dsl');\nvar dsl = require('rest-in-contract-dsl');\nvar {\n  value,\n  stub,\n  test,\n  regex,\n  integer\n} = dsl.functions;\n\nmodule.exports = { \"id\": \"94923fbd-9092-4a46-ad65-0d8a2e2f551e\", \"name\": \"testing for hello contract\", \"request\": { \"method\": \"POST\", \"urlPath\": value({stub: regex(\"/hello/[a-z]*\"), test: \"/hello/apple\" }), \"queryParameters\": [{\"name\":\"a\",\"value\":\"b\"}], \"body\": { \"test\": { \"a\": value({stub: regex(\"[0-9]*\"), test: \"13579\" }), \"b\": value({stub: integer({\"gt\":0,\"lt\":60000}), test: 24680 }), \"c\": [\"apple\",\"orange\",\"banana\"] } }, \"headers\": {  } }, \"response\": { \"status\": 200, \"body\": { \"num\": value({stub: 56789, test: integer({\"gt\":0,\"lt\":60000}) }) }, \"headers\": { \"test-header\": \"dummy\", \"test-regex-header\": regex(\"\\\"/hello/[a-z]{3,5}\\\"\") } } }"
 }
 ```
 
@@ -631,13 +637,13 @@ Connection: keep-alive
 
 Request:
 
-```http
+```
 DELETE http://localhost:8000/api/v1/contracts/94923fbd-9092-4a46-ad65-0d8a2e2f551e
 ```
 
 Response:
 
-```http
+```
 HTTP/1.1 204 No Content
 X-Powered-By: Express
 ETag: W/"a-fKaPqGKTASLjiIDuRL5tqgGTwrc"
@@ -658,7 +664,7 @@ Connection: keep-alive
 
 Request:
 
-```http
+```
 POST http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/wirestubs
 Content-type: application/json
 
@@ -669,7 +675,7 @@ Content-type: application/json
 
 Response:
 
-```http
+```
 HTTP/1.1 201 Created
 X-Powered-By: Express
 location: http://localhost:8001
@@ -689,13 +695,13 @@ Wirestub created
 
 Request:
 
-```http
+```
 GET http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/wirestubs
 ```
 
 Response:
 
-```http
+```
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
@@ -715,13 +721,13 @@ Connection: keep-alive
 
 Request:
 
-```http
+```
 DELETE http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/wirestubs
 ```
 
 Response:
 
-```http
+```
 HTTP/1.1 204 No Content
 X-Powered-By: Express
 ETag: W/"10-Gk3HW1jO8GmUH/09/yQs20dUTAc"
@@ -742,7 +748,7 @@ Connection: keep-alive
 
 Request:
 
-```http
+```
 POST http://localhost:8000/api/v1/apps/80a69a44-3f3b-48c1-a7d1-b34b89117e75/wiretests
 Content-type: application/json
 
@@ -753,7 +759,7 @@ Content-type: application/json
 
 Response:
 
-```http
+```
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
@@ -768,20 +774,90 @@ Connection: keep-alive
     "name": "test"
   },
   "testInfo": {
-    "timeMS": 76.2579990029335,
+    "timeMS": 18.979278922080994,
     "success": true
   },
   "results": [
     {
       "versionNo": "0.0.1",
       "testInfo": {
-        "timeMS": 75.7432410120964,
+        "timeMS": 18.92987608909607,
         "success": true
       },
       "results": [
         {
           "testInfo": {
-            "timeMS": 51.209954023361206,
+            "timeMS": 7.522804021835327,
+            "success": true,
+            "errors": [],
+            "appId": "80a69a44-3f3b-48c1-a7d1-b34b89117e75",
+            "version": "0.0.1",
+            "contract": {
+              "id": "5ce2be34-0aff-4b09-ae89-014e479ec072",
+              "name": "echo contract"
+            },
+            "expectedResponseScript": "{ \"status\": 200, \"body\": evalContext(function (context) {\n                return context.req.rawBody;\n            }), \"headers\": {  } }"
+          },
+          "requestResults": [
+            {
+              "testInfo": {
+                "timeMS": 3.5169509649276733,
+                "success": true,
+                "errors": [],
+                "requestMethod": "GET"
+              },
+              "request": {
+                "method": "GET",
+                "urlPath": "http://localhost:8001/api/v0.0.1/echo",
+                "queryParams": {},
+                "headers": {},
+                "body": ""
+              },
+              "response": {
+                "status": 200,
+                "headers": {
+                  "x-powered-by": "Express",
+                  "content-type": "text/html; charset=utf-8",
+                  "content-length": "0",
+                  "etag": "W/\"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk\"",
+                  "date": "Tue, 01 May 2018 12:20:37 GMT",
+                  "connection": "close"
+                },
+                "body": ""
+              }
+            },
+            {
+              "testInfo": {
+                "timeMS": 2.969341993331909,
+                "success": true,
+                "errors": [],
+                "requestMethod": "POST"
+              },
+              "request": {
+                "method": "POST",
+                "urlPath": "http://localhost:8001/api/v0.0.1/echo",
+                "queryParams": {},
+                "headers": {},
+                "body": ""
+              },
+              "response": {
+                "status": 200,
+                "headers": {
+                  "x-powered-by": "Express",
+                  "content-type": "text/html; charset=utf-8",
+                  "content-length": "0",
+                  "etag": "W/\"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk\"",
+                  "date": "Tue, 01 May 2018 12:20:37 GMT",
+                  "connection": "close"
+                },
+                "body": ""
+              }
+            }
+          ]
+        },
+        {
+          "testInfo": {
+            "timeMS": 5.73561704158783,
             "success": true,
             "errors": [],
             "appId": "80a69a44-3f3b-48c1-a7d1-b34b89117e75",
@@ -789,56 +865,66 @@ Connection: keep-alive
             "contract": {
               "id": "b9135ab0-20d2-43f3-b947-3bac5b061f61",
               "name": "function examples"
-            }
-          },
-          "request": {
-            "method": "POST",
-            "urlPath": "http://localhost:8001/api/v0.0.1/function_examples",
-            "queryParams": {},
-            "headers": {
-              "authorization": "Bearer 0a4b6c5d",
-              "Content-type": "application/json"
             },
-            "body": {
-              "test": {
-                "numberString": "13579",
-                "number": 24680,
-                "arrayOfValues": [
-                  "apple",
-                  "orange",
-                  "banana"
-                ],
-                "regular expression": "acp-113520",
-                "name": "Cristina Hayes",
-                "email": "Cristina.Hayes82@yahoo.com",
-                "phone": "1-454-765-8135",
-                "date": "2017-05-07",
-                "words": "reiciendis est minima",
-                "uuid4": "510552bc-c017-452a-bd51-7b1b3d3a5f13",
-                "multipleChoices": "class A",
-                "notAnyOf": "c"
+            "expectedResponseScript": "{ \"status\": 200, \"body\": { \"num\": value({ \"stub\": 56789, \"test\": integer({\"gt\":0,\"lt\":60000}) }), \"reqBodyJsonParams\": jsonpath(\"$.req.jsonBody.test\"), \"test1\": sum(1, jsonpath(\"$.req.jsonBody.test.number\")), \"evalContext\": evalContext(function (context){\n\t\t\t\treturn context.req.body.test.number + 2;\n\t\t\t}) }, \"headers\": { \"test-header\": \"dummy\", \"test-regex-header\": regex(\"\\\"/hello/[a-z]{3,5}\\\"\") } }"
+          },
+          "requestResults": [
+            {
+              "testInfo": {
+                "timeMS": 5.26628303527832,
+                "success": true,
+                "errors": [],
+                "requestMethod": "POST"
+              },
+              "request": {
+                "method": "POST",
+                "urlPath": "http://localhost:8001/api/v0.0.1/function_examples",
+                "queryParams": {},
+                "headers": {
+                  "authorization": "Bearer 0a4b6c5d",
+                  "Content-type": "application/json"
+                },
+                "body": {
+                  "test": {
+                    "numberString": "13579",
+                    "number": 24680,
+                    "arrayOfValues": [
+                      "apple",
+                      "orange",
+                      "banana"
+                    ],
+                    "regular expression": "acp-113520",
+                    "name": "Cristina Hayes",
+                    "email": "Cristina.Hayes82@yahoo.com",
+                    "phone": "1-454-765-8135",
+                    "date": "2017-05-07",
+                    "words": "reiciendis est minima",
+                    "uuid4": "510552bc-c017-452a-bd51-7b1b3d3a5f13",
+                    "multipleChoices": "class A",
+                    "notAnyOf": "c"
+                  }
+                }
+              },
+              "response": {
+                "status": 200,
+                "headers": {
+                  "x-powered-by": "Express",
+                  "test-header": "dummy",
+                  "test-regex-header": "\"/hello/cgwds\"",
+                  "content-type": "application/json; charset=utf-8",
+                  "content-length": "413",
+                  "etag": "W/\"19d-Tzo0I7hapc6pvdXBfQWWcgrdcos\"",
+                  "date": "Tue, 01 May 2018 12:20:37 GMT",
+                  "connection": "close"
+                },
+                "body": "{\"num\":56789,\"reqBodyJsonParams\":{\"numberString\":\"13579\",\"number\":24680,\"arrayOfValues\":[\"apple\",\"orange\",\"banana\"],\"regular expression\":\"acp-113520\",\"name\":\"Cristina Hayes\",\"email\":\"Cristina.Hayes82@yahoo.com\",\"phone\":\"1-454-765-8135\",\"date\":\"2017-05-07\",\"words\":\"reiciendis est minima\",\"uuid4\":\"510552bc-c017-452a-bd51-7b1b3d3a5f13\",\"multipleChoices\":\"class A\",\"notAnyOf\":\"c\"},\"test1\":24681,\"evalContext\":24682}"
               }
             }
-          },
-          "expectedResponseScript": "{ \"status\": 200, \"body\": { \"num\": integer({\"gt\":0,\"lt\":60000}), \"reqBodyJsonParams\": jsonpath(\"$.req.body.test\") }, \"headers\": { \"test-header\": \"dummy\", \"test-regex-header\": regex(\"\\\"/hello/[a-z]{3,5}\\\"\") } }",
-          "response": {
-            "status": 200,
-            "headers": {
-              "x-powered-by": "Express",
-              "test-header": "dummy",
-              "test-regex-header": "\"/hello/njm\"",
-              "content-type": "application/json; charset=utf-8",
-              "content-length": "381",
-              "etag": "W/\"17d-j5SCn3LsQSGqO0vZ5zj/AHLJ8qg\"",
-              "date": "Tue, 09 May 2017 09:11:28 GMT",
-              "connection": "close"
-            },
-            "body": "{\"num\":56789,\"reqBodyJsonParams\":[{\"numberString\":\"13579\",\"number\":24680,\"arrayOfValues\":[\"apple\",\"orange\",\"banana\"],\"regular expression\":\"acp-113520\",\"name\":\"Cristina Hayes\",\"email\":\"Cristina.Hayes82@yahoo.com\",\"phone\":\"1-454-765-8135\",\"date\":\"2017-05-07\",\"words\":\"reiciendis est minima\",\"uuid4\":\"510552bc-c017-452a-bd51-7b1b3d3a5f13\",\"multipleChoices\":\"class A\",\"notAnyOf\":\"c\"}]}"
-          }
+          ]
         },
         {
           "testInfo": {
-            "timeMS": 22.899529993534088,
+            "timeMS": 5.237089991569519,
             "success": true,
             "errors": [],
             "appId": "80a69a44-3f3b-48c1-a7d1-b34b89117e75",
@@ -846,44 +932,55 @@ Connection: keep-alive
             "contract": {
               "id": "94923fbd-9092-4a46-ad65-0d8a2e2f551e",
               "name": "testing for hello contract"
-            }
+            },
+            "expectedResponseScript": "{ \"status\": 200, \"body\": { \"num\": value({ \"stub\": 56789, \"test\": integer({\"gt\":0,\"lt\":60000}) }) }, \"headers\": { \"test-header\": \"dummy\", \"test-regex-header\": regex(\"\\\"/hello/[a-z]{3,5}\\\"\"), \"test-regex-header2\": regex(\"/world/[a-z]{3,5}\") } }"
           },
-          "request": {
-            "method": "POST",
-            "urlPath": "http://localhost:8001/api/v0.0.1/hello/apple",
-            "queryParams": {
-              "a": "b"
-            },
-            "headers": {
-              "Content-type": "application/json"
-            },
-            "body": {
-              "test": {
-                "a": "13579",
-                "b": 24680,
-                "c": [
-                  "apple",
-                  "orange",
-                  "banana"
-                ]
+          "requestResults": [
+            {
+              "testInfo": {
+                "timeMS": 4.786684989929199,
+                "success": true,
+                "errors": [],
+                "requestMethod": "POST"
+              },
+              "request": {
+                "method": "POST",
+                "urlPath": "http://localhost:8001/api/v0.0.1/hello/apple",
+                "queryParams": {
+                  "a": "b"
+                },
+                "headers": {
+                  "Content-type": "application/json"
+                },
+                "body": {
+                  "test": {
+                    "a": "13579",
+                    "b": 24680,
+                    "c": [
+                      "apple",
+                      "orange",
+                      "banana"
+                    ]
+                  }
+                }
+              },
+              "response": {
+                "status": 200,
+                "headers": {
+                  "x-powered-by": "Express",
+                  "test-header": "dummy",
+                  "test-regex-header": "\"/hello/ztms\"",
+                  "test-regex-header2": "/world/zla",
+                  "content-type": "application/json; charset=utf-8",
+                  "content-length": "13",
+                  "etag": "W/\"d-X7zzcBORmHVzBfO4n/4UzEkpfkY\"",
+                  "date": "Tue, 01 May 2018 12:20:37 GMT",
+                  "connection": "close"
+                },
+                "body": "{\"num\":56789}"
               }
             }
-          },
-          "expectedResponseScript": "{ \"status\": 200, \"body\": { \"num\": integer({\"gt\":0,\"lt\":60000}) }, \"headers\": { \"test-header\": \"dummy\", \"test-regex-header\": regex(\"\\\"/hello/[a-z]{3,5}\\\"\") } }",
-          "response": {
-            "status": 200,
-            "headers": {
-              "x-powered-by": "Express",
-              "test-header": "dummy",
-              "test-regex-header": "\"/hello/hsxuj\"",
-              "content-type": "application/json; charset=utf-8",
-              "content-length": "13",
-              "etag": "W/\"d-X7zzcBORmHVzBfO4n/4UzEkpfkY\"",
-              "date": "Tue, 09 May 2017 09:11:28 GMT",
-              "connection": "close"
-            },
-            "body": "{\"num\":56789}"
-          }
+          ]
         }
       ]
     }

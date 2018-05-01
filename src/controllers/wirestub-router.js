@@ -9,10 +9,12 @@ var router = express.Router({ mergeParams: true });
 router.post('/', async(req, res, next) => {
     let appId = req.params.appId;
     let wirestub = new Wirestub(req.body);
-    let [error, data, code] = (await wirestubServices.create(appId, wirestub)).get();
+    let [error, data, code, result] = (await wirestubServices.create(appId, wirestub)).get();
     if (!error) {
-        res.set('location', `http://localhost:${wirestub.port}`);
-        return res.status(201).send('Wirestub created');
+        if (code === 201){
+            res.set('location', `http://localhost:${wirestub.port}`);
+        }
+        return res.status(code).send(result.message);
     } else {
         return res.status(code).send(error.message);
     }
