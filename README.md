@@ -1,5 +1,7 @@
 # rest-in-contract
 
+(Unmaintained)
+
 [![npm version](https://img.shields.io/npm/v/rest-in-contract.svg)](https://www.npmjs.com/package/rest-in-contract)
 [![node](https://img.shields.io/node/v/rest-in-contract.svg)](https://www.npmjs.com/package/rest-in-contract)
 [![Codecov branch](https://img.shields.io/codecov/c/github/airicyu/rest-in-contract/master.svg)](https://codecov.io/gh/airicyu/rest-in-contract)
@@ -23,16 +25,6 @@
 
 Currently, the project is in beta version (v0.x.x).
 The basic Contract Server module is done to support basic usage of API Contract stubbing & testing, but we do not finalized the v1.0 in-the-box features yet.
-
-## Roadmaps
-
-- Add Unit tests
-- Update documents
-- Database Storage
-- Authentication
-- Support Plugins
-- Java/nodejs test integration client
-- Study on integration with Swagger
 
 ## What is rest-in-contract
 
